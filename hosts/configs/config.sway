@@ -1,0 +1,69 @@
+exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP
+exec wl-paste -p -t text --watch clipman store -P --
+exec autotiling
+exec inactive-windows-transparency.py --opacity 0.50 &
+
+include /etc/sway/config.d/*
+
+output DP-1 {
+    mode 1920x1080@60Hz
+    pos 0 1080
+}
+output DP-2 {
+    mode 1920x1080@60Hz
+    pos 0 0
+}
+
+default_border pixel 3px
+focus_follows_mouse yes
+focus_wrapping no
+floating_modifier Mod1
+xwayland enable
+
+workspace 1 output DP-1
+workspace 2 output DP-1
+workspace 3 output DP-1
+workspace 4 output DP-2
+workspace 5 output DP-2
+workspace 6 output DP-2
+
+bindsym Mod1+Shift+q kill
+bindsym Mod1+Shift+r reload
+bindsym Mod1+Return exec kitty
+bindsym Mod4+l exec swaylock
+bindsym Mod1+p exec wofi --show run
+bindsym Mod4+r exec wofi --show run
+bindsym Mod1+Shift+p exec dmenu_run
+bindsym Mod4+Shift+r exec dmenu_run
+bindsym Mod4+e exec kitty ranger
+bindsym Mod1+f fullscreen
+bindsym Mod1+Shift+f floating toggle
+bindsym Mod1+Space focus floating
+bindsym Mod1+Tab workspace next
+bindsym Mod1+Shift+Tab workspace prev
+bindsym Mod1+u workspace 1
+bindsym Mod1+i workspace 2
+bindsym Mod1+o workspace 3
+bindsym Mod1+Shift+u move container to workspace 1
+bindsym Mod1+Shift+i move container to workspace 2
+bindsym Mod1+Shift+o move container to workspace 3
+bindsym Mod4+u workspace 4
+bindsym Mod4+i workspace 5
+bindsym Mod4+o workspace 6
+bindsym Mod4+Shift+u move container to workspace 4
+bindsym Mod4+Shift+i move container to workspace 5
+bindsym Mod4+Shift+o move container to workspace 6
+bindsym Mod1+Shift+Backspace  move scratchpad
+bindsym Mod1+Backspace  scratchpad show
+bindsym Mod1+h focus left
+bindsym Mod1+j focus down
+bindsym Mod1+k focus up
+bindsym Mod1+l focus right
+bindsym Mod1+Shift+h move left
+bindsym Mod1+Shift+j move down
+bindsym Mod1+Shift+k move up
+bindsym Mod1+Shift+l move right
+bindsym Mod1+Ctrl+h resize shrink width 32 px or 32 ppt
+bindsym Mod1+Ctrl+j resize grow height 32 px or 32 ppt
+bindsym Mod1+Ctrl+k resize shrink height 32 px or 32 ppt
+bindsym Mod1+Ctrl+l resize grow width 32 px or 32 ppt

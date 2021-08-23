@@ -1,0 +1,15 @@
+pre_bump_hooks = []
+post_bump_hooks = []
+
+[commit_types]
+init = { changelog_title = "Inital Commit"}
+add = { changelog_title = "Additions"}
+tweak = { changelog_title = "Tweaks"}
+module = { changelog_title = "New Modules"}
+package = {changelog_title = "New Package"}
+
+[changelog]
+path = "CHANGELOG.md"
+authors = []
+
+[bump_profiles]

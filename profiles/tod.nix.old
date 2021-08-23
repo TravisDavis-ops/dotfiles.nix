@@ -1,0 +1,152 @@
+{ nix, nur, builders, ... }:
+let
+  start-wm = nix.writeShellScriptBin "start-wm" ''
+    systemctl --user import-environment
+    exec systemctl --user start sway.service
+  '';
+  start-bar = nix.writeShellScriptBin "start-bar" ''
+    . /etc/profile
+    export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -f 'sway$').sock
+    ${nix.waybar}/bin/waybar
+  '';
+in
+with builders; mkProfile {
+  username = "tod";
+  packages = (with nur; [
+    one-step-from-eden
+    torchlight
+    stardew-valley
+    swayhide
+    nhentai
+    cocogitto
+  ]) ++ (with nix; [
+    discord
+    mupdf
+    obsidian
+    pcalc
+    sxiv
+    bpytop
+    sysstat
+  ]) ++ [
+    start-bar
+    start-wm
+  ];
+  userConfig = {
+    git = {
+      enable = true;
+      enableStore = true;
+      userName = "travisdavis-ops";
+      userEmail = "travisdavismedia@gmail.com";
+    };
+    sway = { enable = true; };
+
+    neovim = {
+      enable = true;
+      enableFull = true;
+      enableRust = true;
+      enablePython = true;
+      enableNix = true;
+    };
+    ranger = {
+      enable = true;
+      enablePreviews = true;
+      enableVcs = true;
+      fileRules = [
+        {
+          extension = "nix";
+          command = "nvim";
+        }
+        {
+          extension = "rs";
+          command = "nvim";
+        }
+        {
+          extension = "toml";
+          command = "nvim";
+        }
+        {
+          extension = "md";
+          command = "nvim";
+        }
+      ];
+    };
+  };
+
+  user-d = {
+    sockets.dbus = {
+      Unit = {
+        Description = "D-Bus User Message Bus Socket";
+      };
+      Socket = {
+        ListenStream = "%t/bus";
+        ExecStartPost = "${nix.systemd}/bin/systemctl --user set-environment DBUS_SESSION_BUS_ADDRESS=unix:path=%t/bus";
+      };
+      Install = {
+        WantedBy = [ "sockets.target" ];
+        Also = [ "dbus.service" ];
+      };
+    };
+    services = {
+      sway = {
+        Unit = {
+          Description = "Sway - Wayland window manager";
+          Documentation = [ "man:sway(5)" ];
+          BindsTo = [ "graphical-session.target" ];
+          Wants = [ "graphical-session-pre.target" ];
+          After = [ "graphical-session-pre.target" ];
+        };
+        Service = {
+          Type = "simple";
+          ExecStart = "${nix.sway}/bin/sway";
+          Restart = "on-failure";
+          RestartSec = 1;
+          TimeoutStopSec = 10;
+        };
+      };
+      waybar = {
+        Unit = {
+          Description = "Wayland bar for Sway and Wlroots based compositors";
+          PartOf = [ "graphical-session.target" ];
+        };
+        Install = {
+          WantedBy = [ "graphical-session.target" ];
+        };
+        Service = {
+          Type = "simple";
+          ExecStart = "${start-bar}/bin/start-bar";
+          RestartSec = 5;
+          Restart = "always";
+        };
+      };
+      mako = {
+        Unit = {
+          Description = "Mako notification daemon";
+          PartOf = [ "graphical-session.target" ];
+        };
+        Install = {
+          WantedBy = [ "graphical-session.target" ];
+        };
+        Service = {
+          Type = "dbus";
+          BusName = "org.freedesktop.Notifications";
+          ExecStart = "${nix.mako}/bin/mako";
+          RestartSec = 5;
+          Restart = "always";
+        };
+      };
+      dbus = {
+        Unit = {
+          Description = "D-Bus User Message Bus";
+          Requires = [ "dbus.socket" ];
+        };
+        Service = {
+          ExecStart = "${nix.dbus}/bin/dbus-daemon --session --address=systemd: --nofork --nopidfile --systemd-activation";
+          ExecReload = "${nix.dbus}/bin/dbus-send --print-reply --session --type=method_call --dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig";
+        };
+        Install = {
+          Also = [ "dbus.socket" ];
+        };
+      };
+    };
+  };
+}
