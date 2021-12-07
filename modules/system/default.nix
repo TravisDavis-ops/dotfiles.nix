@@ -8,5 +8,6 @@
     ./joycond.nix
     ./pipewire
     ./usbtop.nix
+    ./openssh.nix
   ];
 }

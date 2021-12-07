@@ -41,7 +41,9 @@ builders.mkHostSystem {
     shell = nix.fish;
   }];
 
-  systemConfig = { };
+  systemConfig = {
+      openssh.enable = true;
+  };
 
   cpuCores = 1;
 }
