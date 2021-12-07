@@ -37,12 +37,13 @@ builders.mkHostSystem {
 
   users = [{
     name = "tod";
-    groups = [ "wheel" ];
+    groups = [ "wheel" "docker"];
     shell = nix.fish;
   }];
 
   systemConfig = {
       openssh.enable = true;
+      docker.enable = true;
   };
 
   cpuCores = 1;
