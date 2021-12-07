@@ -2,4 +2,5 @@
 
   ruby = import ./ruby { inherit nix nur builders; };
   garnet = import ./garnet { inherit nix nur builders; };
+  azure = import ./azure { inherit nix nur builders; };
 }

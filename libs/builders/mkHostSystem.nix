@@ -17,8 +17,7 @@ with builtins;
 , cpuTempSensor ? null
 }:
 let
-  inherit (drives) boot;
-  inherit (drives) extra;
+  inherit (drives) boot extra swap;
 
   networkCfg = listToAttrs (map
     (n: {
@@ -50,6 +49,8 @@ lib.nixosSystem {
     environment.etc = { "hmsystemdata.json".text = toJSON userCfg; };
 
     fileSystems = boot // extra;
+    inherit (swap) swapDevices;
+    
     networking = {
       hostName = "${name}";
       useDHCP = false;
@@ -59,7 +60,7 @@ lib.nixosSystem {
 
     boot = {
       initrd.availableKernelModules = initrdModules;
-      inherit kernelParams kernelModules kernelPackages bootLoader;
+      inherit kernelParams kernelModules kernelPackages ;
       cleanTmpDir = false;
       runSize = "40%";
       loader = bootLoader;
