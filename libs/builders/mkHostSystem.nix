@@ -11,6 +11,7 @@ with builtins;
 , systemConfig
 , cpuCores
 , users
+, bootLoader
 , wifi ? [ ]
 , gpuTempSensor ? null
 , cpuTempSensor ? null
@@ -58,13 +59,14 @@ lib.nixosSystem {
 
     boot = {
       initrd.availableKernelModules = initrdModules;
-      inherit kernelParams kernelModules kernelPackages;
+      inherit kernelParams kernelModules kernelPackages bootLoader;
       cleanTmpDir = false;
       runSize = "40%";
-      loader = {
-        efi = { canTouchEfiVariables = true; };
-        systemd-boot = { enable = true; graceful = true; };
-      };
+      loader = bootLoader;
+      #{
+      #  efi = { canTouchEfiVariables = true; };
+      #  systemd-boot = { enable = true; graceful = true; };
+      #};
     };
 
     nixpkgs = {

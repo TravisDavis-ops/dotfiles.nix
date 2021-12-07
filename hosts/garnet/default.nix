@@ -16,7 +16,11 @@ builders.mkHostSystem {
   initrdModules = [ "xhci_pci" "ahci" "nvme" "uas" "usbhid" "sd_mod" ];
   kernelModules = [ "kvm-intel" ];
   kernelParams = [ ];
-  systemConfig = { sway = swayConfig; };
+
+  bootLoader = {
+    efi = { canTouchEfiVariables = true; };
+    systemd-boot = { enable = true; graceful = true;};
+  };
 
   wifi = {
     enable = true;
@@ -29,6 +33,9 @@ builders.mkHostSystem {
     groups = [ "wheel" ];
     shell = nix.fish;
   }];
+
+  systemConfig = { sway = swayConfig; };
+
   cpuCores = 4;
 
 }

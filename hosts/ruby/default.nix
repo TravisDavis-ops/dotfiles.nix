@@ -39,13 +39,9 @@ builders.mkHostSystem {
   kernelModules = [ "kvm-amd" "amdgpu" "radeon" ];
   kernelParams = [ ];
 
-  systemConfig = {
-    sway = swayConfig;
-    udev.enable = true;
-    docker.enable = true;
-    flatpak.enable = true;
-    usbtop.enable = false; #  wasnt helpful remove incoming or usb dev profile
-    pipewire.enable = false; # audio started to cut out at times
+  bootLoader = {
+    efi = { canTouchEfiVariables = true; };
+    systemd-boot = { enable = true; graceful = true;};
   };
 
   wifi = {
@@ -59,6 +55,16 @@ builders.mkHostSystem {
     groups = [ "wheel" "docker" "dialout" ];
     shell = nix.fish;
   }];
+
+  systemConfig = {
+    sway = swayConfig;
+    udev.enable = true;
+    docker.enable = true;
+    flatpak.enable = true;
+    usbtop.enable = false; #  wasnt helpful remove incoming or usb dev profile
+    pipewire.enable = false; # audio started to cut out at times
+  };
+
   cpuCores = 4;
 
 }
