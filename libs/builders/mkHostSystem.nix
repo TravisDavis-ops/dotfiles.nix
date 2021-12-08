@@ -1,37 +1,21 @@
 { system, nix, lib, mkUser, ... }@inputs:
 with builtins;
-{ name
-, drives
-, hardware
-, interfaces
-, initrdModules
-, kernelModules
-, kernelParams
-, kernelPackages
-, systemConfig
-, cpuCores
-, users
-, bootLoader
-, wifi ? [ ]
-, gpuTempSensor ? null
-, cpuTempSensor ? null
-}:
+{ name, drives, hardware, interfaces, initrdModules, kernelModules, kernelParams
+, kernelPackages, systemConfig, cpuCores, users, bootLoader, wifi ? [ ]
+, gpuTempSensor ? null, cpuTempSensor ? null }:
 let
   inherit (drives) boot extra swap;
 
-  networkCfg = listToAttrs (map
-    (n: {
-      name = "${n}";
-      value = { useDHCP = true; };
-    })
-    interfaces);
+  networkCfg = listToAttrs (map (n: {
+    name = "${n}";
+    value = { useDHCP = true; };
+  }) interfaces);
   userCfg = {
     inherit name interfaces systemConfig cpuCores gpuTempSensor cpuTempSensor;
   };
   systemUsers = (map (u: mkUser u) users);
 
-in
-lib.nixosSystem {
+in lib.nixosSystem {
   inherit system;
   modules = [{
     imports = [ ../../modules/system ] ++ systemUsers;
@@ -50,7 +34,7 @@ lib.nixosSystem {
 
     fileSystems = boot // extra;
     inherit (swap) swapDevices;
-    
+
     networking = {
       hostName = "${name}";
       useDHCP = false;
@@ -60,7 +44,7 @@ lib.nixosSystem {
 
     boot = {
       initrd.availableKernelModules = initrdModules;
-      inherit kernelParams kernelModules kernelPackages ;
+      inherit kernelParams kernelModules kernelPackages;
       cleanTmpDir = false;
       runSize = "40%";
       loader = bootLoader;

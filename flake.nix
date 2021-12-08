@@ -12,9 +12,10 @@
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }@repos:
+  outputs = { self, nixpkgs, home-manager, flake-utils, ... }@repos:
     let
       system = "x86_64-linux";
 
@@ -32,53 +33,41 @@
         config.allowUnfree = true;
       };
 
-      # Config Builders
-      builders =
-        (import ./libs { inherit system nix home-manager lib; }).builders;
+      libs = import ./libs { inherit system nix home-manager lib; };
 
-      # Simple transformer
-      Script2App = { scriptPath }: {
-        type = "app";
-        program = builtins.toPath scriptPath;
-      };
+      inherit (libs) builders utils;
 
       # Private Packages
       nur = (import ./pkgs { inherit nix builders; });
 
       # Configured Systems
       hosts = import ./hosts { inherit nur nix builders; };
-
+      containers = import ./containers;
       # User Profiles
       profiles = import ./profiles { inherit nur nix builders; };
 
       # User Scripts
       scripts = import ./scripts { inherit nix meta; };
-
-    in
-    {
+    in {
 
       apps.x86_64-linux = {
 
         # Install target host configuration
-        # TODO(travis) add params for hostname
-        install = Script2App { scriptPath = scripts.install; };
+        install = utils.Script2App { scriptPath = scripts.install; };
 
         # Activate homemanager profile
-        # TODO(travis) add  params for profile
-        activate = Script2App { scriptPath = scripts.activate; };
+        activate = utils.Script2App { scriptPath = scripts.activate; };
 
-        # Build flake repo
-        # TODO(travis) is this even a good way to make sure everything is working
-        build = Script2App { scriptPath = scripts.build; };
+        #lint = utils.Script2App { scriptPath = scripts.lint; };
+
+        build = utils.Script2App { scriptPath = scripts.build; };
 
       };
 
       packages.x86_64-linux = { inherit nur; };
-
-      # HomeManger Profiles
-      homeManagerConfigurations = profiles;
-
-      # NixOs Host
       nixosConfigurations = hosts;
+      nixosContainers = containers;
+
+      homeManagerConfigurations = profiles;
     };
 }
