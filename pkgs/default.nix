@@ -5,6 +5,7 @@ let
   self = with nix.pkgs;
     recurseIntoAttrs {
       nhentai = callPackage ./nhentai { pythonPackages = python3Packages; };
+      kavita = callPackage ./kavita {};
       cocogitto = callPackage ./cocogitto {};
       #toml-bombadil = callPackage ./toml-bombadil {};
       swayhide = callPackage ./swayhide { };
