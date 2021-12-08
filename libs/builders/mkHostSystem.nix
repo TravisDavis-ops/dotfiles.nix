@@ -18,7 +18,7 @@ let
 in lib.nixosSystem {
   inherit system;
   modules = [{
-    imports = [ ../../modules/system ] ++ systemUsers;
+    imports = [ ../../modules/system ../../modules/containers ] ++ systemUsers;
     local = systemConfig;
     users.groups = {
       uinput = { name = "uinput"; };

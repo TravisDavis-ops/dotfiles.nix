@@ -28,7 +28,10 @@ in builders.mkHostSystem {
       '';
     };
   };
-
+  #ethernet = {
+  #  interface = "eth0";
+  #  ipv4 = {address = "45.79.214.146"; };
+  #};
   wifi = { enable = false; };
 
   users = [{
@@ -40,6 +43,7 @@ in builders.mkHostSystem {
   systemConfig = {
     openssh.enable = true;
     docker.enable = true;
+    nextcloud.enable = true;
   };
 
   cpuCores = 1;
