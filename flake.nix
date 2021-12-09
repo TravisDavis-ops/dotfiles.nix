@@ -65,8 +65,8 @@
       };
 
       packages.x86_64-linux = { inherit nur; };
+
       nixosConfigurations = hosts;
-      nixosContainers = containers;
 
       homeManagerConfigurations = profiles;
     };

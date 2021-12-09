@@ -3,13 +3,13 @@ let
   inherit (nix.lib) callPackageWith;
   callPackage = callPackageWith (nix.pkgs);
   self = with nix.pkgs;
-    recurseIntoAttrs {
+    {
       nhentai = callPackage ./nhentai { pythonPackages = python3Packages; };
       kavita = callPackage ./kavita {};
       cocogitto = callPackage ./cocogitto {};
       #toml-bombadil = callPackage ./toml-bombadil {};
       swayhide = callPackage ./swayhide { };
-      corsair-pro-led = callPackage ./cosair-pro-led  { inherit fetchFromGitHub;  kernel = linuxPackages.kernel; };
+      corsair-cpro-led = callPackage ./corsair-cpro-led  { inherit fetchFromGitHub;  kernel = linuxPackages.kernel; };
       one-step-from-eden = callPackage
         (import ./one-step-from-eden {
           lib = nix.lib;
