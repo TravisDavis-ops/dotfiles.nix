@@ -1,11 +1,15 @@
 { pkgs, nur, builders, common, ... }:
 let
+  hostName = "ruby";
   drives = import ./drives;
 in
 builders.mkHostSystem rec {
-  inherit drives;
+  inherit hostName drives;
 
-  hostName = "ruby";
+  bootloader = {
+    efi.canTouchEfiVariables = true;
+    systemd-boot = { enable = true; graceful = true; };
+  };
 
   hardware = {
     pulseaudio = {
@@ -17,6 +21,7 @@ builders.mkHostSystem rec {
       enable = true;
       powerOnBoot = true;
     };
+
     cpu.amd.updateMicrocode = true;
   };
 
@@ -27,10 +32,20 @@ builders.mkHostSystem rec {
     params = [ ];
   };
 
-  bootLoader = {
-    efi = { canTouchEfiVariables = true; };
-    systemd-boot = { enable = true; graceful = true; };
-  };
+  users = [
+    rec {
+      name = "tod";
+      groups = [ "wheel" "uinput" "dialout" ];
+      shell = pkgs.fish;
+      password = "${hostName}-${name}";
+    }
+    rec {
+      name = "mgnt";
+      groups = [ "wheel" "docker" ];
+      shell = pkgs.fish;
+      password = "${hostName}-${name}";
+    }
+  ];
 
   network = {
     nameservers = [ "127.0.0.1" "1.1.1.1" "8.8.8.8" ];
@@ -45,18 +60,7 @@ builders.mkHostSystem rec {
     iwd.enable = true;
   };
 
-  users = [{
-    name = "tod";
-    groups = [ "wheel" "uinput" "dialout" ];
-    shell = pkgs.fish;
-  }
-    {
-      name = "mgnt";
-      groups = [ "wheel" "docker" ];
-      shell = pkgs.fish;
-    }];
-
-  config = {
+  configs = {
     greetd.enable = true;
     sway = common.sway { enable = true; };
     mpd = {

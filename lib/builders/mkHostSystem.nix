@@ -1,23 +1,22 @@
 { system, lib, home-manager, nur, nixpkgs, reduceToAttr, callProfile, mkUser, ... }@inputs:
 with builtins;
 { hostName
-, drives
+, bootloader
 , hardware
 , kernel
-, config
-, cores
+, drives
 , users
-, bootLoader
 , network ? { }
 , wifi ? { }
-
+, configs ? { }
+, cores ? 1
 }:
 let
   inherit (drives) boot extra swap;
 
   profiles = reduceToAttr (map (u: callProfile hostName u.name) users);
+  noCheck = set: mapAttrs (k: v: v // {noCheck=true;}) set;
   userAccounts = map (u: mkUser u) users;
-
 in
 lib.nixosSystem {
   inherit system;
@@ -54,17 +53,17 @@ lib.nixosSystem {
 
         cleanTmpDir = false;
         runSize = "40%";
-        loader = bootLoader;
+        loader = bootloader;
       };
 
       hardware = hardware // {
         enableRedistributableFirmware = true;
       };
 
-      fileSystems = boot // extra;
+      fileSystems = boot // noCheck extra;
+
       swapDevices = swap;
 
-      local = config;
 
       networking = {
         inherit hostName;
@@ -72,6 +71,7 @@ lib.nixosSystem {
         wireless = wifi;
       } // network;
 
+      local = configs;
 
       system.stateVersion = "21.05";
     }

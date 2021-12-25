@@ -1,13 +1,10 @@
 { pkgs, builders, ... }:
-let drives = import ./drives;
+let
+  hostName = "jade";
+  drives = import ./drives;
 in
 builders.mkHostSystem {
-  inherit drives;
-  hostName = "jade";
-  hardware = {
-    pulseaudio.enable = false;
-    bluetooth.enable = false;
-  };
+  inherit hostName drives;
   kernel = {
     package = pkgs.linuxPackages;
     earlyModules = [ "virtio_pci" "virtio_scsi" "ahci" ];
@@ -29,6 +26,7 @@ builders.mkHostSystem {
       '';
     };
   };
+
   network = {
     nameservers = [ "50.116.41.5" "23.239.18.5" "74.207.231.5" ];
     interfaces.eth0 = {
@@ -45,22 +43,23 @@ builders.mkHostSystem {
       ];
     };
   };
-  wifi = { enable = false; };
 
   users= [
-    {
+    rec {
       name = "tod";
       groups = [ "wheel" "docker" ];
       shell = pkgs.fish;
+      password = "${hostName}-${name}";
     }
-    {
+    rec {
       name = "mgnt";
       groups = [ "wheel" "docker" ];
       shell = pkgs.fish;
+      password = "${hostName}-${name}";
     }
   ];
 
-  config = {
+  configs = {
     openssh.enable = true;
     docker.enable = true;
   };

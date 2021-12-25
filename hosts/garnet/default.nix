@@ -1,11 +1,11 @@
 { pkgs, builders, common, ... }:
 let
-  swayConfig = import ./swayConfig.nix;
+  hostName = "garnet";
   drives = import ./drives;
 in
 builders.mkHostSystem {
-  inherit drives;
-  hostName = "garnet";
+  inherit hostName drives;
+
   hardware = {
     pulseaudio.enable = true;
     bluetooth.enable = true;
@@ -18,7 +18,7 @@ builders.mkHostSystem {
     params = [];
   };
 
-  bootLoader = {
+  bootloader = {
     efi = { canTouchEfiVariables = true; };
     systemd-boot = { enable = true; graceful = true; };
   };
@@ -29,13 +29,16 @@ builders.mkHostSystem {
     networks.Rockman = { psk = "rockman.exe"; };
   };
 
-  users = [{
-    name = "tod";
-    groups = [ "wheel" ];
-    shell = pkgs.fish;
-  }];
+  users = [
+    rec {
+      name = "tod";
+      groups = [ "wheel" ];
+      shell = pkgs.fish;
+      password = "${hostName}-${name}";
+    }
+  ];
 
-  config = { sway = common.sway { enable = true; }; };
+  configs = { sway = common.sway { enable = true; }; };
 
   cores = 4;
 }

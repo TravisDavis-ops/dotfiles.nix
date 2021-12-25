@@ -1,14 +1,11 @@
 { pkgs, builders, ... }:
 let
+  hostName = "azure";
   drives = import ./drives;
 in
 builders.mkHostSystem {
-  inherit drives ;
-  hostName = "azure";
-  hardware = {
-    pulseaudio.enable = false;
-    bluetooth.enable = false;
-  };
+  inherit hostName drives;
+
   kernel = {
     package = pkgs.linuxPackages;
     earlyModules= [ "virtio_pci" "virtio_scsi" "ahci" ];
@@ -16,7 +13,7 @@ builders.mkHostSystem {
     params = [ "console=ttyS0,19200n8" ];
   };
 
-  bootLoader = {
+  bootloader = {
     timeout = 0;
     grub = {
       enable = true;
@@ -41,22 +38,23 @@ builders.mkHostSystem {
       };
     };
   };
-  wifi = { enable = false; };
 
   users = [
-    {
+    rec {
       name = "tod";
-      groups = [ "wheel" "docker" ];
+      groups = [ "wheel" ];
       shell = pkgs.fish;
+      password = "${hostName}-${name}";
     }
-    {
+    rec {
       name = "mgnt";
       groups = [ "wheel" "docker" ];
       shell = pkgs.fish;
+      password = "${hostName}-${name}";
     }
   ];
 
-  config = {
+  configs = {
     openssh.enable = true;
     docker.enable = true;
   };
