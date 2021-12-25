@@ -62,7 +62,7 @@ lib.nixosSystem {
       };
 
       fileSystems = boot // extra;
-      inherit (swap) swapDevices;
+      swapDevices = swap;
 
       local = config;
 

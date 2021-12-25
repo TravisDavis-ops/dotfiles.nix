@@ -1,3 +1,1 @@
-{
-  swapDevices = [{ device = "/var/swapfile"; }];
-}
+ [{ device = "/var/swapfile"; }]

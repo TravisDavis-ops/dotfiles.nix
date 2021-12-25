@@ -1,5 +1,4 @@
-{
-  swapDevices = [
+[
     { device = "/dev/sdb"; }
-  ];
-}
+]
+
