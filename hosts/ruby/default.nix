@@ -5,7 +5,7 @@ in
 builders.mkHostSystem rec {
   inherit drives;
 
-  name = "ruby";
+  hostName = "ruby";
 
   hardware = {
     pulseaudio = {

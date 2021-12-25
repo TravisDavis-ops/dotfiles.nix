@@ -1,10 +1,10 @@
 { pkgs, builders, ... }:
 let
   drives = import ./drives;
-  name = "azure";
 in
 builders.mkHostSystem {
-  inherit drives name;
+  inherit drives ;
+  hostName = "azure";
   hardware = {
     pulseaudio.enable = false;
     bluetooth.enable = false;

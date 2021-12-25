@@ -3,7 +3,7 @@ let drives = import ./drives;
 in
 builders.mkHostSystem {
   inherit drives;
-  name = "jade";
+  hostName = "jade";
   hardware = {
     pulseaudio.enable = false;
     bluetooth.enable = false;

@@ -1,6 +1,6 @@
 { system, lib, home-manager, nur, nixpkgs, reduceToAttr, callProfile, mkUser, ... }@inputs:
 with builtins;
-{ name
+{ hostName
 , drives
 , hardware
 , initrdModules
@@ -67,7 +67,7 @@ lib.nixosSystem {
       local = config;
 
       networking = {
-        hostName = "${name}";
+        inherit hostName;
         useDHCP = false;
         wireless = wifi;
       } // network;

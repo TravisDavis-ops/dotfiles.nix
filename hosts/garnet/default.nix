@@ -5,7 +5,7 @@ let
 in
 builders.mkHostSystem {
   inherit drives;
-  name = "garnet";
+  hostName = "garnet";
   hardware = {
     pulseaudio.enable = true;
     bluetooth.enable = true;
