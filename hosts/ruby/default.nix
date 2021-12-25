@@ -20,10 +20,12 @@ builders.mkHostSystem rec {
     cpu.amd.updateMicrocode = true;
   };
 
-  kernelPackages = pkgs.linuxPackages;
-  initrdModules = [ "xhci_pci" "ahci" "nvme" "uas" "usbhid" "sd_mod" ];
-  kernelModules = [ "kvm-amd" "amdgpu" "radeon" ];
-  kernelParams = [ ];
+  kernel = {
+    package = pkgs.linuxPackages;
+    earlyModules = [ "xhci_pci" "ahci" "nvme" "uas" "usbhid" "sd_mod"];
+    lateModules = [ "kvm-amd" "amdgpu" "radeon"];
+    params = [ ];
+  };
 
   bootLoader = {
     efi = { canTouchEfiVariables = true; };

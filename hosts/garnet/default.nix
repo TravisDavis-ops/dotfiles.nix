@@ -11,10 +11,12 @@ builders.mkHostSystem {
     bluetooth.enable = true;
   };
 
-  kernelPackages = pkgs.linuxPackages;
-  initrdModules = [ "xhci_pci" "ahci" "nvme" "uas" "usbhid" "sd_mod" ];
-  kernelModules = [ "kvm-intel" ];
-  kernelParams = [ ];
+  kernel = {
+    package = pkgs.linuxPackages;
+    earlyModules =[ "xhci_pci" "ahci" "nvme" "uas" "usbhid" "sd_mod" ] ;
+    lateModules = [ "kvm-intel" ];
+    params = [];
+  };
 
   bootLoader = {
     efi = { canTouchEfiVariables = true; };

@@ -3,10 +3,7 @@ with builtins;
 { hostName
 , drives
 , hardware
-, initrdModules
-, kernelModules
-, kernelParams
-, kernelPackages
+, kernel
 , config
 , cpuCores
 , userAccounts
@@ -50,8 +47,11 @@ lib.nixosSystem {
       };
 
       boot = {
-        initrd.availableKernelModules = initrdModules;
-        inherit kernelParams kernelModules kernelPackages;
+        kernelPackages = mkIf (hasAttr "package" kernel)  kernel.package;
+        kernelModules = mkIf (hasAttr "lateModules" kernel)  kernel.lateModules;
+        initrd.availableKernelModules = mkIf (hasAttr "earlyModules" kernel)  kernel.earlyModules;
+        kernelParams = mkIf (hasAttr "params" kernel)  kernel.params;
+
         cleanTmpDir = false;
         runSize = "40%";
         loader = bootLoader;

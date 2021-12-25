@@ -8,10 +8,12 @@ builders.mkHostSystem {
     pulseaudio.enable = false;
     bluetooth.enable = false;
   };
-  kernelPackages = pkgs.linuxPackages;
-  initrdModules = [ "virtio_pci" "virtio_scsi" "ahci" ];
-  kernelModules = [ ];
-  kernelParams = [ "console=ttyS0,19200n8" ];
+  kernel = {
+    package = pkgs.linuxPackages;
+    earlyModules = [ "virtio_pci" "virtio_scsi" "ahci" ];
+    lateModules = [];
+    params = [ "console=ttyS0,19200n8" ];
+  };
 
   bootLoader = {
     timeout = 0;
