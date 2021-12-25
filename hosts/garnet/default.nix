@@ -37,5 +37,5 @@ builders.mkHostSystem {
 
   config = { sway = common.sway { enable = true; }; };
 
-  cpuCores = 4;
+  cores = 4;
 }

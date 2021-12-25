@@ -61,5 +61,5 @@ builders.mkHostSystem {
     docker.enable = true;
   };
 
-  cpuCores = 1;
+  cores = 1;
 }

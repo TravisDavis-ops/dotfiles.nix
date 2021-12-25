@@ -69,5 +69,5 @@ builders.mkHostSystem rec {
     flatpak.enable = true;
   };
 
-  cpuCores = 4;
+  cores = 4;
 }

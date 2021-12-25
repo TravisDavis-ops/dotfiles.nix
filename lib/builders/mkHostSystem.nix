@@ -5,7 +5,7 @@ with builtins;
 , hardware
 , kernel
 , config
-, cpuCores
+, cores
 , users
 , bootLoader
 , network ? { }
@@ -34,7 +34,7 @@ lib.nixosSystem {
           extra-experimental-features = nix-command
           extra-experimental-features = flakes
         '';
-        maxJobs = lib.mkDefault cpuCores;
+        maxJobs = lib.mkDefault cores;
         gc = {
           automatic = true;
           dates = "weekly";
