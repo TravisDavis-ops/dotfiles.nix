@@ -45,7 +45,7 @@ builders.mkHostSystem rec {
     iwd.enable = true;
   };
 
-  userAccounts = [{
+  users = [{
     name = "tod";
     groups = [ "wheel" "uinput" "dialout" ];
     shell = pkgs.fish;

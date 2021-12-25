@@ -6,7 +6,7 @@ with builtins;
 , kernel
 , config
 , cpuCores
-, userAccounts
+, users
 , bootLoader
 , network ? { }
 , wifi ? { }
@@ -15,15 +15,15 @@ with builtins;
 let
   inherit (drives) boot extra swap;
 
-  profiles = reduceToAttr (map (u: callProfile name u.name) userAccounts);
-  users = map (u: mkUser u) userAccounts;
+  profiles = reduceToAttr (map (u: callProfile hostName u.name) users);
+  userAccounts = map (u: mkUser u) users;
 
 in
 lib.nixosSystem {
   inherit system;
   modules = [
     {
-      imports = [ ../../modules/system ] ++ users;
+      imports = [ ../../modules/system ] ++ userAccounts;
 
       i18n.defaultLocale = "en_US.UTF-8";
       time.timeZone = "America/Chicago";
@@ -47,10 +47,10 @@ lib.nixosSystem {
       };
 
       boot = {
-        kernelPackages = mkIf (hasAttr "package" kernel)  kernel.package;
-        kernelModules = mkIf (hasAttr "lateModules" kernel)  kernel.lateModules;
-        initrd.availableKernelModules = mkIf (hasAttr "earlyModules" kernel)  kernel.earlyModules;
-        kernelParams = mkIf (hasAttr "params" kernel)  kernel.params;
+        kernelPackages = lib.mkIf (hasAttr "package" kernel)  kernel.package;
+        kernelModules = lib.mkIf (hasAttr "lateModules" kernel)  kernel.lateModules;
+        initrd.availableKernelModules = lib.mkIf (hasAttr "earlyModules" kernel)  kernel.earlyModules;
+        kernelParams = lib.mkIf (hasAttr "params" kernel)  kernel.params;
 
         cleanTmpDir = false;
         runSize = "40%";

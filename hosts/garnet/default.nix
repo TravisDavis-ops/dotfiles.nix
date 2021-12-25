@@ -29,7 +29,7 @@ builders.mkHostSystem {
     networks.Rockman = { psk = "rockman.exe"; };
   };
 
-  userAccounts = [{
+  users = [{
     name = "tod";
     groups = [ "wheel" ];
     shell = pkgs.fish;

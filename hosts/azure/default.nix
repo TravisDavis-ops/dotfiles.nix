@@ -43,7 +43,7 @@ builders.mkHostSystem {
   };
   wifi = { enable = false; };
 
-  userAccounts = [
+  users = [
     {
       name = "tod";
       groups = [ "wheel" "docker" ];
