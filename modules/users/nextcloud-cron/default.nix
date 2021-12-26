@@ -6,12 +6,13 @@ let
   cmd = pkgs.writeShellScriptBin "run-cron" ''
     docker exec -u 33 -it nextcloud-app php -f /var/www/html/cron.php
   '';
-in {
+in
+{
   options.local.nextcloud-cron = {
     enable = mkEnableOption "Nextcloud cron timer";
   };
   config = mkIf cfg.enable {
-    home.packages = [cmd];
+    home.packages = [ cmd ];
     systemd.user = {
       services.nextcloud-cron = {
         Unit = { Description = "Run Nextcloud-app's background cron"; };
@@ -31,7 +32,7 @@ in {
           OnUnitActiveSec = "5min";
           Unit = "nextcloud-cron.service";
         };
-        Install = { WantedBy = ["timers.target"]; };
+        Install = { WantedBy = [ "timers.target" ]; };
       };
     };
   };
