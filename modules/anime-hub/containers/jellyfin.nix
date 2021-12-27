@@ -1,9 +1,9 @@
 { pkgs, config, lib, ... }:
 with lib;
 let
-  cfg = config.local.home-network.containers.jellyfin;
-  containerCfg = config.local.home-network.containers;
-  proxyCfg = config.local.home-network.proxy;
+  cfg = config.local.anime-hub.containers.jellyfin;
+  containerCfg = config.local.anime-hub.containers;
+  proxyCfg = config.local.anime-hub.proxy;
   self = {
     interfacePort = 8096;
     configFolder = "/config";
@@ -11,7 +11,7 @@ let
   };
 in
 with builtins; {
-  options.local.home-network.containers.jellyfin = {
+  options.local.anime-hub.containers.jellyfin = {
     enable = mkEnableOption "Activate Jellyfin";
     domainName = mkOption { type = types.str; };
     hostPort = mkOption { type = types.port; };

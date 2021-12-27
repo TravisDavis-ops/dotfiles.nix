@@ -1,9 +1,9 @@
 { pkgs, config, lib, ... }:
 with lib;
 let
-  cfg = config.local.home-network.containers.shoko;
-  containerCfg = config.local.home-network.containers;
-  proxyCfg = config.local.home-network.proxy;
+  cfg = config.local.anime-hub.containers.shoko;
+  containerCfg = config.local.anime-hub.containers;
+  proxyCfg = config.local.anime-hub.proxy;
   self = {
     configFolder = "/home/shoko/.shoko";
     interfacePort = 8111;
@@ -11,7 +11,7 @@ let
   };
 in
 with builtins; {
-  options.local.home-network.containers.shoko = {
+  options.local.anime-hub.containers.shoko = {
     enable = mkEnableOption "Activate Shoko Server";
     domainName = mkOption { type = types.str; };
     hostPort = mkOption { type = types.port; };

@@ -1,46 +1,54 @@
 { pkgs, config, lib, ... }:
 let
-  cfg = config.local.home-network;
+  cfg = config.anime-hub;
 in
 with lib; {
+
   imports = [
     ./containers
-    ./proxy
+    ./server.nix
     ./security
   ];
-  options.local.home-network = {
-    enable = mkEnableOption "home-network";
+  options.anime-hub= {
+    enable = mkEnableOption "anime-hub";
   };
   config = mkIf cfg.enable {
-    local.home-network = {
+    anime-hub = {
       security.enable = true;
-
-      proxy = {
+      metrics = {
         enable = true;
-        listen = { addr = "192.168.1.64"; port = 80; };
+        domainName = "ruby.dashboard";
+        collectorPort = 9002;
+        managementPort = 9001;
+        dashboardPort = 9000;
+      };
+
+      server = {
+        enable = true;
+        bond = { addr = "192.168.1.64"; port = 80; };
       };
 
       containers = {
         mediaFolder = "/mnt";
-
+        #portRange = range 8000 9000;
         pihole = {
           enable = true;
-          domainName = "www.admin.home";
+          domainName = "ruby.admin";
           hostPort = 8080;
         };
         komga = {
           enable = true;
-          domainName = "www.library.home";
+          domainName = "ruby.library";
           hostPort = 8081;
         };
         jellyfin = {
           enable = true;
-          domainName = "www.media.home";
+          domainName = "ruby.media";
           hostPort = 8082;
         };
         shoko = {
           enable = true;
-          domainName = "www.meta.home";
+          domainName = "ruby.metadata";
           hostPort = 8083;
         };
       };

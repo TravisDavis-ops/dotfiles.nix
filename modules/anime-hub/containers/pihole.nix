@@ -1,9 +1,9 @@
 { pkgs, config, lib, ... }:
 with lib;
 let
-  cfg = config.local.home-network.containers.pihole;
-  containerCfg = config.local.home-network.containers;
-  proxyCfg = config.local.home-network.proxy;
+  cfg = config.local.anime-hub.containers.pihole;
+  containerCfg = config.local.anime-hub.containers;
+  proxyCfg = config.local.anime-hub.proxy;
   self = {
     configFolder = "/etc/pihole";
     interfacePort = 80;
@@ -12,7 +12,7 @@ let
   };
 in
 with builtins; {
-  options.local.home-network.containers.pihole = {
+  options.local.anime-hub.containers.pihole = {
     enable = mkEnableOption "Activate Pi-Hole Dns";
     domainName = mkOption { type = types.str; };
     hostPort = mkOption { type = types.port; };

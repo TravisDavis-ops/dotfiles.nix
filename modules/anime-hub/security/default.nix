@@ -1,9 +1,9 @@
 { config, pkgs, lib, ... }:
 with lib;
-let cfg = config.local.home-network.security;
+let cfg = config.local.anime-hub.security;
 in
 {
-  options.local.home-network.security = {
+  options.local.anime-hub.security = {
     enable = mkEnableOption "Enable openssh daemon";
 
   };

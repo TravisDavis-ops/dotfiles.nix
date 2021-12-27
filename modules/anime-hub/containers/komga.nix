@@ -1,16 +1,16 @@
 { pkgs, config, lib, ... }:
 with lib;
 let
-  cfg = config.local.home-network.containers.komga;
-  containerCfg = config.local.home-network.containers;
-  proxyCfg = config.local.home-network.proxy;
+  cfg = config.local.anime-hub.containers.komga;
+  containerCfg = config.local.anime-hub.containers;
+  proxyCfg = config.local.anime-hub.proxy;
   self = {
     interfacePort = 8080;
     configFolder = "/config";
   };
 in
 with builtins; {
-  options.local.home-network.containers.komga = {
+  options.local.anime-hub.containers.komga = {
     enable = mkEnableOption "Activate Komga";
     domainName = mkOption { type = types.str; };
     hostPort = mkOption { type = types.port; };
