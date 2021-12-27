@@ -8,7 +8,7 @@ builders.mkHostSystem {
 
   kernel = {
     package = pkgs.linuxPackages;
-    earlyModules= [ "virtio_pci" "virtio_scsi" "ahci" ];
+    earlyModules = [ "virtio_pci" "virtio_scsi" "ahci" ];
     lateModules = [ ];
     params = [ "console=ttyS0,19200n8" ];
   };
@@ -54,7 +54,7 @@ builders.mkHostSystem {
     }
   ];
 
-  configs = {
+  modules = {
     openssh.enable = true;
     docker.enable = true;
   };

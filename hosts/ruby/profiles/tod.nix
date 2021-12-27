@@ -2,39 +2,38 @@
   imports = [ ];
   home.stateVersion = "22.05";
   programs.home-manager.enable = true;
-
-  home.packages = (with nur; [
-    cocogitto
-    stardew-valley
-    slay-the-spire
-    swayhide
-    nhentai
-  ]) ++ (with pkgs; [
-    bpytop
-    sysstat
-    entr
-    vlc
-    zoxide
-    bitwarden
-    qbittorrent
-    nixpkgs-fmt
-    nixfmt
-    exa
-  ]);
-  home.sessionVariables = {
-    CLUTTER_BACKEND = "wayland";
-    GDK_BACKEND = "wayland";
-    GDK_DPI_SCALE = 1;
-    MOZ_ENABLE_WAYLAND = 1;
-    QT_QPA_PLATFORM = "wayland-egl";
-    QT_WAYLAND_DISABLE_WINDOWDECORATION = 1;
-    SDL_VIDEODRIVER = "wayland";
-    WLR_NO_HARDWARE_CURSORS = 1;
-    _JAVA_AWT_WM_NONREPARENTING = 1;
-    _JAVA_OPTIONS = "-Dawt.useSystemAAFontSettings=on";
-    EDITOR = "nvim";
-    VISUAL = "nvim";
+  home = {
+    packages = (with nur; [
+      cocogitto
+      swayhide
+      nhentai
+    ]) ++ (with pkgs; [
+      bpytop
+      sysstat
+      entr
+      vlc
+      zoxide
+      bitwarden
+      qbittorrent
+      nixpkgs-fmt
+      exa
+    ]);
+    sessionVariables = {
+      CLUTTER_BACKEND = "wayland";
+      GDK_BACKEND = "wayland";
+      GDK_DPI_SCALE = 1;
+      MOZ_ENABLE_WAYLAND = 1;
+      QT_QPA_PLATFORM = "wayland-egl";
+      QT_WAYLAND_DISABLE_WINDOWDECORATION = 1;
+      SDL_VIDEODRIVER = "wayland";
+      WLR_NO_HARDWARE_CURSORS = 1;
+      _JAVA_AWT_WM_NONREPARENTING = 1;
+      _JAVA_OPTIONS = "-Dawt.useSystemAAFontSettings=on";
+      EDITOR = "nvim";
+      VISUAL = "nvim";
+    };
   };
+
   systemd.user = {
     sockets.dbus = {
       Unit = { Description = "D-Bus User Message Bus Socket"; };
@@ -64,7 +63,15 @@
       };
     };
   };
-
+  programs = {
+    direnv = {
+      enable = true;
+      enableFishIntegration = true;
+    };
+    fish = {
+      enable = true;
+    };
+  };
   local = {
     sway = { enable = true; };
     waybar = { enable = true; };
@@ -75,7 +82,6 @@
       userName = "travisdavis-ops";
       userEmail = "travisdavismedia@gmail.com";
     };
-
     neovim = {
       enable = true;
       enableFull = true;
@@ -84,7 +90,6 @@
       enableNix = true;
       enableC98 = true;
     };
-
     ranger = {
       enable = true;
       enablePreviews = true;

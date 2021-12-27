@@ -1,4 +1,4 @@
 [
-    { device = "/dev/sdb"; }
+  { device = "/dev/sdb"; }
 ]
 

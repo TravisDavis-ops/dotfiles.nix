@@ -27,15 +27,15 @@ builders.mkHostSystem rec {
 
   kernel = {
     package = pkgs.linuxPackages;
-    earlyModules = [ "xhci_pci" "ahci" "nvme" "uas" "usbhid" "sd_mod"];
-    lateModules = [ "kvm-amd" "amdgpu" "radeon"];
+    earlyModules = [ "xhci_pci" "ahci" "nvme" "uas" "usbhid" "sd_mod" ];
+    lateModules = [ "kvm-amd" "amdgpu" "radeon" ];
     params = [ ];
   };
 
   users = [
     rec {
       name = "tod";
-      groups = [ "wheel" "uinput" "dialout" ];
+      groups = [ "wheel" "input" "uinput" "dialout" ];
       shell = pkgs.fish;
       password = "${hostName}-${name}";
     }
@@ -48,7 +48,7 @@ builders.mkHostSystem rec {
   ];
 
   network = {
-    nameservers = [ "127.0.0.1" "1.1.1.1" "8.8.8.8" ];
+    nameservers = [ "192.168.1.64" "1.1.1.1" "8.8.8.8" ];
     interfaces = {
       enp9s0.useDHCP = true;
       wlan0.useDHCP = true;
@@ -60,18 +60,23 @@ builders.mkHostSystem rec {
     iwd.enable = true;
   };
 
-  configs = {
-    greetd.enable = true;
-    sway = common.sway { enable = true; };
+
+
+  modules = {
+    anime-hub.enable = true;
+    docker.enable = true;
+    flatpak.enable = true;
+    openssh.enable = true;
+    qmk-rules.enable = true;
+    sway = common.sway {enable = true;};
     mpd = {
       enable = true;
       pulseFix = true;
       musicPath = "/mnt/media/Music/";
     };
-    udev.enable = true;
-    docker.enable = true;
-    flatpak.enable = true;
   };
-
+  services = {
+    joycond.enable = true;
+  };
   cores = 4;
 }

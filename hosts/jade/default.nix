@@ -8,11 +8,11 @@ builders.mkHostSystem {
   kernel = {
     package = pkgs.linuxPackages;
     earlyModules = [ "virtio_pci" "virtio_scsi" "ahci" ];
-    lateModules = [];
+    lateModules = [ ];
     params = [ "console=ttyS0,19200n8" ];
   };
 
-  bootLoader = {
+  bootloader = {
     timeout = 0;
     grub = {
       enable = true;
@@ -44,7 +44,7 @@ builders.mkHostSystem {
     };
   };
 
-  users= [
+  users = [
     rec {
       name = "tod";
       groups = [ "wheel" "docker" ];
@@ -59,7 +59,7 @@ builders.mkHostSystem {
     }
   ];
 
-  configs = {
+  modules = {
     openssh.enable = true;
     docker.enable = true;
   };

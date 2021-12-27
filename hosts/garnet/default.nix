@@ -13,9 +13,9 @@ builders.mkHostSystem {
 
   kernel = {
     package = pkgs.linuxPackages;
-    earlyModules =[ "xhci_pci" "ahci" "nvme" "uas" "usbhid" "sd_mod" ] ;
+    earlyModules = [ "xhci_pci" "ahci" "nvme" "uas" "usbhid" "sd_mod" ];
     lateModules = [ "kvm-intel" ];
-    params = [];
+    params = [ ];
   };
 
   bootloader = {
@@ -38,7 +38,7 @@ builders.mkHostSystem {
     }
   ];
 
-  configs = { sway = common.sway { enable = true; }; };
+  modules = { sway = common.sway { enable = true; }; };
 
   cores = 4;
 }

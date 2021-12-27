@@ -1,6 +1,7 @@
 { pkgs }: {
   sway = { enable }: {
     inherit enable;
+    autoLogin = "tod";
     programs = with pkgs; [
       swaylock
       swayidle
