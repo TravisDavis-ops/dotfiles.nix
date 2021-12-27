@@ -1,9 +1,9 @@
 { config, pkgs, lib, ... }:
 with lib;
-let cfg = config.local.flatpak;
+let cfg = config.os.p.flatpak;
 in
 {
-  options.local.flatpak = {
+  options.os.p.flatpak = {
     enable = mkOption {
       description = "Enable Flatpak";
       type = types.bool;

@@ -1,10 +1,10 @@
 { config, pkgs, lib, ... }:
 with lib;
 let
-  cfg = config.local.sway;
+  cfg = config.os.p.sway;
 in
 {
-  options.local.sway = {
+  options.os.p.sway = {
     enable = mkOption {
       description = "enable sway";
       type = types.bool;
@@ -20,6 +20,9 @@ in
       type = types.path;
       default = "";
     };
+    autoLogin = mkOption {
+      type = types.nullOr types.str;
+    };
   };
 
   config = mkIf cfg.enable {
@@ -28,9 +31,20 @@ in
       wrapperFeatures.gtk = true;
       extraPackages = cfg.programs;
     };
+    services.greetd = {
+      enable = true;
+      package = pkgs.greetd.wlgreet;
+      settings = {
+        default_session = {
+          command = "sway";
+          user = "${cfg.autoLogin}";
+        };
+      };
+    };
 
     environment.etc = mkIf ((stringLength cfg.systemConfig) > 0) {
       "sway/config".source = cfg.systemConfig;
     };
   };
 }
+

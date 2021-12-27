@@ -1,9 +1,9 @@
 { pkgs, config, lib, ... }:
 with lib;
 let
-  cfg = config.local.anime-hub.containers.jellyfin;
-  containerCfg = config.local.anime-hub.containers;
-  proxyCfg = config.local.anime-hub.proxy;
+  cfg = config.os.p.anime-hub.containers.jellyfin;
+  containerCfg = config.os.p.anime-hub.containers;
+  serverCfg = config.os.p.anime-hub.server;
   self = {
     interfacePort = 8096;
     configFolder = "/config";
@@ -11,7 +11,7 @@ let
   };
 in
 with builtins; {
-  options.local.anime-hub.containers.jellyfin = {
+  options.os.p.anime-hub.containers.jellyfin = {
     enable = mkEnableOption "Activate Jellyfin";
     domainName = mkOption { type = types.str; };
     hostPort = mkOption { type = types.port; };
@@ -33,8 +33,8 @@ with builtins; {
       ];
       autoStart = true;
     };
-    services.nginx.virtualHosts.${cfg.domainName} = mkIf proxyCfg.enable {
-      listen = [ proxyCfg.listen ];
+    services.nginx.virtualHosts.${cfg.domainName} = mkIf serverCfg.enable {
+      listen = [ serverCfg.bond ];
       locations."/" = {
         proxyPass = "http://localhost:${toString cfg.hostPort}";
       };

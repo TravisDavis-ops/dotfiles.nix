@@ -1,22 +1,20 @@
 { config, pkgs, lib, ... }:
 with lib;
-let cfg = config.local.pipewire;
-
+let cfg = config.os.p.docker;
 in
 {
-  options.local.pipewire = {
+  options.os.p.docker = {
     enable = mkOption {
-      description = "Enable pipewire";
+      description = "Enable docker";
       type = types.bool;
       default = false;
     };
   };
-
   config = mkIf cfg.enable {
-    services.pipewire = {
+
+    virtualisation.docker = {
       enable = true;
-      alsa.enable = true;
-      pulse.enable = true;
+      liveRestore = false;
     };
   };
 }

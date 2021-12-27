@@ -1,9 +1,9 @@
 { config, pkgs, lib, ... }:
 with lib;
-let cfg = config.local.mpd;
+let cfg = config.os.p.mpd;
 in
 {
-  options.local.mpd = {
+  options.os.p.mpd = {
     enable = mkOption {
       description = "Enable MPD";
       type = types.bool;

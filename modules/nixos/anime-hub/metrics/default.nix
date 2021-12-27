@@ -1,9 +1,9 @@
 { config, pkgs, lib, ... }:
 with lib;
-let cfg = config.anime-hub.metrics;
+let cfg = config.os.p.anime-hub.metrics;
 in
 {
-  options.anime-hub.metrics = with types; {
+  options.os.p.anime-hub.metrics = with types; {
     enable = mkEnableOption "configure anime-hub's metrics dashboard";
     domainName = mkOption{ type= str; };
     collectorPort = mkOption{ type=port; };
@@ -37,7 +37,7 @@ in
         };
         scrapeConfigs = [
           {
-            job_name = builtins.getEnv "HOSTNAME";
+            job_name = "${cfg.domainName}";
             static_configs = [{
               targets = [
                 "127.0.0.1:${toString cfg.collectorPort}"

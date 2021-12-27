@@ -1,18 +1,19 @@
 { pkgs, config, lib, ... }:
 let
-  cfg = config.anime-hub;
+  cfg = config.os.p.anime-hub;
 in
 with lib; {
 
   imports = [
-    ./containers
     ./server.nix
     ./security
+    ./metrics
+    ./containers
   ];
-  options.anime-hub= {
+  options.os.p.anime-hub= {
     enable = mkEnableOption "anime-hub";
   };
-  config = mkIf cfg.enable {
+  config.os.p = mkIf cfg.enable {
     anime-hub = {
       security.enable = true;
       metrics = {

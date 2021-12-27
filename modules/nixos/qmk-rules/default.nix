@@ -1,9 +1,9 @@
 { config, pkgs, lib, ... }:
 with lib;
-let cfg = config.local.udev;
+let cfg = config.os.p.qmk-rules;
 in
 {
-  options.local.udev = { enable = mkEnableOption "Qmk udev rules"; };
+  options.os.p.qmk-rules= { enable = mkEnableOption "Qmk udev rules"; };
 
   config = mkIf cfg.enable {
     services.udev = {

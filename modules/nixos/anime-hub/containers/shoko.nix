@@ -1,9 +1,9 @@
 { pkgs, config, lib, ... }:
 with lib;
 let
-  cfg = config.local.anime-hub.containers.shoko;
-  containerCfg = config.local.anime-hub.containers;
-  proxyCfg = config.local.anime-hub.proxy;
+  cfg = config.os.p.anime-hub.containers.shoko;
+  containerCfg = config.os.p.anime-hub.containers;
+  serverCfg = config.os.p.anime-hub.server;
   self = {
     configFolder = "/home/shoko/.shoko";
     interfacePort = 8111;
@@ -11,7 +11,7 @@ let
   };
 in
 with builtins; {
-  options.local.anime-hub.containers.shoko = {
+  options.os.p.anime-hub.containers.shoko = {
     enable = mkEnableOption "Activate Shoko Server";
     domainName = mkOption { type = types.str; };
     hostPort = mkOption { type = types.port; };
@@ -29,8 +29,8 @@ with builtins; {
       ];
       autoStart = true;
     };
-    services.nginx.virtualHosts.${cfg.domainName} = mkIf proxyCfg.enable {
-      listen = [ proxyCfg.listen ];
+    services.nginx.virtualHosts.${cfg.domainName} = mkIf serverCfg.enable {
+      listen = [ serverCfg.bond];
       locations."/" = {
         proxyPass = "http://localhost:${toString cfg.hostPort}";
       };
