@@ -12,6 +12,7 @@
     callPackageWith set p overrides;
     => 3
   */
+  callProfileWith = set: host: name: overrides: ({ ${name} = import ../hosts/${host}/profiles/${name}.nix set // overrides; });
 
   callProfile = host: name: ({ ${name} = import ../hosts/${host}/profiles/${name}.nix; });
   /* Return an AttrSet of Profiles
@@ -34,5 +35,5 @@
 
   reduceToAttr = reduce (cs: c: c // cs);
 
-  builders = callPackageWith inputs ./builders { inherit reduceToAttr callPackageWith callProfile builders; };
+  builders = callPackageWith inputs ./builders { inherit callProfileWith reduceToAttr callPackageWith callProfile builders; };
 }

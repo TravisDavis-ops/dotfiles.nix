@@ -1,4 +1,4 @@
-{ system, nixpkgs, nur, home-manager, waypkgs,... }@inputs: rec {
+{ system, nixpkgs, nur, home-manager, waypkgs, ... }@inputs: rec {
 
   callPackage = inputs.callPackageWith inputs;
 

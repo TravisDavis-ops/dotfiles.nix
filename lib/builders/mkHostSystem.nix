@@ -2,27 +2,29 @@
 with builtins;
 { hostName
 , bootloader
-, hardware
+, hardware ? { }
 , kernel
 , drives
 , users
 , network ? { }
 , wifi ? { }
-, configs ? { }
+, modules ? { }
+, services ? { }
 , cores ? 1
 }:
 let
   inherit (drives) boot extra swap;
 
   profiles = reduceToAttr (map (u: callProfile hostName u.name) users);
-  noCheck = set: mapAttrs (k: v: v // {noCheck=true;}) set;
+  noCheck = set: mapAttrs (k: v: v // { noCheck = true; }) set;
   userAccounts = map (u: mkUser u) users;
 in
 lib.nixosSystem {
   inherit system;
   modules = [
     {
-      imports = [ ../../modules/system ] ++ userAccounts;
+      inherit services;
+      imports = [ ../../modules/nixos ] ++ userAccounts;
 
       i18n.defaultLocale = "en_US.UTF-8";
       time.timeZone = "America/Chicago";
@@ -46,10 +48,10 @@ lib.nixosSystem {
       };
 
       boot = {
-        kernelPackages = lib.mkIf (hasAttr "package" kernel)  kernel.package;
-        kernelModules = lib.mkIf (hasAttr "lateModules" kernel)  kernel.lateModules;
-        initrd.availableKernelModules = lib.mkIf (hasAttr "earlyModules" kernel)  kernel.earlyModules;
-        kernelParams = lib.mkIf (hasAttr "params" kernel)  kernel.params;
+        kernelPackages = lib.mkIf (hasAttr "package" kernel) kernel.package;
+        kernelModules = lib.mkIf (hasAttr "lateModules" kernel) kernel.lateModules;
+        initrd.availableKernelModules = lib.mkIf (hasAttr "earlyModules" kernel) kernel.earlyModules;
+        kernelParams = lib.mkIf (hasAttr "params" kernel) kernel.params;
 
         cleanTmpDir = false;
         runSize = "40%";
@@ -71,17 +73,18 @@ lib.nixosSystem {
         wireless = wifi;
       } // network;
 
-      local = configs;
 
+      os.p = modules;
       system.stateVersion = "21.05";
     }
+
     home-manager.nixosModules.home-manager
     {
       home-manager = {
         extraSpecialArgs = { inherit nur; };
         useGlobalPkgs = true;
         useUserPackages = true;
-        sharedModules = [ ../../modules/users ];
+        sharedModules = [ ../../modules/home-manager ];
         users = profiles;
       };
     }
