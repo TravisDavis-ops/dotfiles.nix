@@ -6,7 +6,7 @@ in
   cocogitto = callPackage ./cocogitto { };
   #toml-bombadil = callPackage ./toml-bombadil {};
   xxh = callPackage ./xxh { pythonPackages = pkgs.python39Packages; };
-  mangodl = callPackage ./mangodl {};
+  mangodl = callPackage ./mangodl { };
   swayhide = callPackage ./swayhide { };
   corsair-cpro-led = callPackage ./corsair-cpro-led {
     inherit (pkgs) fetchFromGitHub;

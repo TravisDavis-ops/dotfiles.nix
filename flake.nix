@@ -21,9 +21,12 @@
     in
     {
       nixosConfigurations = import ./hosts { inherit system nixpkgs home-manager lib nur meta; };
+      nixosModules = {
+         anime-hub = import ./modules/nixos/anime-hub;
+      };
       templates = import ./templates;
       inherit lib;
-    } // flake-utils.lib.eachSystem [system] ( system: {
+    } // flake-utils.lib.eachSystem [ system ] (system: {
       packages = nur;
     });
 }
