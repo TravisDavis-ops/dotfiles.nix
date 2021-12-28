@@ -14,7 +14,10 @@ in
   config = mkIf cfg.enable {
     programs.waybar = {
       enable = true;
+      style = ./style.css;
     };
+    xdg.configFile."waybar/config".source = ./config;
+
     systemd.user.services.bar-starter = {
       Unit = {
         Description = "Graphical bar daemon";

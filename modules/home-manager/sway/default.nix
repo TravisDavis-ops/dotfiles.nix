@@ -13,7 +13,7 @@ in
         include /etc/sway/config
         output * bg $HOME/.wallpaper fill
         exec pulseaudio
-        exec systemctl --user start bar-starter
+        exec sleep 10; systemctl --user start bar-starter
         exec systemctl --user start notification-starter
       '';
     };

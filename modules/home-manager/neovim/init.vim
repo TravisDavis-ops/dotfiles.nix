@@ -31,7 +31,7 @@ set formatoptions -=cro
 set clipboard=unnamedplus
 set foldmethod=indent
 set autoread
-
+set laststatus=2
 " - Directives
 filetype plugin indent on
 syntax enable
@@ -39,6 +39,11 @@ syntax enable
 " - Plugin Settings
 let mapleader = ";"
 let g:startify_session_dir = '~/.config/nvim/session'
+let g:tokyonight_style = "night"
+
+" Register the components:
+
+
 
 autocmd BufWritePre * %s/\s\+$//e
 autocmd FocusGained,BufEnter * :checktime
@@ -125,3 +130,14 @@ function! s:todo() abort
     copen
   endif
 endfunction
+
+colorscheme tokyonight
+
+
+let g:lightline = {
+  \  'colorscheme': 'tokyonight',
+  \  'active': {
+  \     'left': [[ 'coc_info', 'coc_hints', 'coc_errors', 'coc_warnings', 'coc_ok' ], [ 'coc_status'  ]]
+  \   }
+  \ }
+call lightline#coc#register()

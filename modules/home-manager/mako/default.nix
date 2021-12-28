@@ -2,12 +2,6 @@
 with lib;
 let
   cfg = config.local.mako;
-
-  bar-cmd = pkgs.writeShellScriptBin "bar-cmd" ''
-    source /etc/profile
-    export SWAYSOCK=/run/user/$(id -u)/sway-ipc.$(id -u).$(pgrep -f 'sway$').sock
-    ${pkgs.mako}/bin/waybar
-  '';
 in
 {
   options.local.mako = { enable = mkEnableOption "Mako(Service)"; };
@@ -15,6 +9,17 @@ in
     programs.mako = {
       enable = true;
       anchor = "bottom-center";
+      backgroundColor="#24283b";
+      textColor="#c0caf5";
+      width=350;
+      margin="0,20,20";
+      padding="10";
+      borderSize=2;
+      borderColor="#414868";
+      borderRadius=5;
+      defaultTimeout=10000;
+      groupBy="summary";
+
     };
     systemd.user.services.notification-starter = {
       Unit = {
@@ -33,6 +38,5 @@ in
         KillMode = "mixed";
       };
     };
-
   };
 }

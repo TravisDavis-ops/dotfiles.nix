@@ -7,16 +7,19 @@ let
     coc-nvim
     syntastic
     fugitive
-    vim-airline
+    lightline-vim
+    vim-lightline-coc
     vim-startify
+    tokyonight-nvim
   ];
+
   baseDeps = with pkgs; [ ];
 
   fullPlugins = with pkgs.vimPlugins; [ ranger-vim fzf-vim ];
   fullDeps = with pkgs; [ ranger fzf ];
 
   nixPlugins = with pkgs.vimPlugins; [ vim-nix ];
-  nixDeps = with pkgs; [ ];
+  nixDeps = with pkgs; [ rnix-lsp ];
 
   rustPlugins = with pkgs.vimPlugins; [ coc-rust-analyzer vim-toml ];
   rustDeps = with pkgs; [ rust-analyzer rustc cargo ];
@@ -93,6 +96,11 @@ in
               };
             };
           };
+          nix = {
+            command= "rnix-lsp";
+            filetypes = [ "nix" ];
+          };
+
         };
       };
       withPython3 = true;
