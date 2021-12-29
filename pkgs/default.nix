@@ -8,6 +8,7 @@ in
   xxh = callPackage ./xxh { pythonPackages = pkgs.python39Packages; };
   mangodl = callPackage ./mangodl { };
   swayhide = callPackage ./swayhide { };
+  swaync = callPackage ./swaync { };
   corsair-cpro-led = callPackage ./corsair-cpro-led {
     inherit (pkgs) fetchFromGitHub;
     kernel = pkgs.linuxPackages.kernel;
