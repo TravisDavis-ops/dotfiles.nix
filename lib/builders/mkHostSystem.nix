@@ -25,7 +25,7 @@ lib.nixosSystem (with pkgs; {
   modules = [
     {
       inherit services;
-      imports = [ ../../modules/nixos ] ++ userAccounts;
+      imports = [ ../../modules/system ] ++ userAccounts;
 
       i18n.defaultLocale = "en_US.UTF-8";
       time.timeZone = "America/Chicago";
@@ -95,7 +95,7 @@ lib.nixosSystem (with pkgs; {
         extraSpecialArgs = { inherit nur; };
         useGlobalPkgs = true;
         useUserPackages = true;
-        sharedModules = [ ../../modules/home-manager ];
+        sharedModules = [ ../../modules/user ];
         users = profiles;
       };
     }
