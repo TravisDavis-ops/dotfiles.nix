@@ -5,10 +5,10 @@ in
 {
   options.os.p.anime-hub.metrics = with types; {
     enable = mkEnableOption "configure anime-hub's metrics dashboard";
-    domainName = mkOption{ type= str; };
-    collectorPort = mkOption{ type=port; };
-    managementPort = mkOption{ type=port; };
-    dashboardPort = mkOption{ type=port; };
+    domainName = mkOption { type = str; };
+    collectorPort = mkOption { type = port; };
+    managementPort = mkOption { type = port; };
+    dashboardPort = mkOption { type = port; };
   };
 
   config = mkIf cfg.enable {
@@ -31,7 +31,7 @@ in
         exporters = {
           node = {
             enable = true;
-            enabledCollectors = [ "systemd" "cpu" "cpufreq" "diskstats" "hwmon" "filesystem" "mdadm" "netdev"];
+            enabledCollectors = [ "systemd" "cpu" "cpufreq" "diskstats" "hwmon" "filesystem" "mdadm" "netdev" ];
             port = cfg.collectorPort;
           };
         };

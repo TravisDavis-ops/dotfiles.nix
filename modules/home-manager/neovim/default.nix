@@ -97,7 +97,7 @@ in
             };
           };
           nix = {
-            command= "rnix-lsp";
+            command = "rnix-lsp";
             filetypes = [ "nix" ];
           };
 

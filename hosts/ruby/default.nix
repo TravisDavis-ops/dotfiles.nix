@@ -68,7 +68,7 @@ builders.mkHostSystem rec {
     flatpak.enable = true;
     openssh.enable = true;
     qmk-rules.enable = true;
-    sway = common.sway {enable = true;};
+    sway = common.sway { enable = true; };
     mpd = {
       enable = true;
       pulseFix = true;

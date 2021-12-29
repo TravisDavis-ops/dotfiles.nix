@@ -10,14 +10,14 @@ with lib; {
     ./metrics
     ./containers
   ];
-  options.os.p.anime-hub= {
+  options.os.p.anime-hub = {
     enable = mkEnableOption "anime-hub";
   };
   config.os.p = mkIf cfg.enable {
     anime-hub = {
       security.enable = true;
       metrics = {
-        enable = true;
+        enable = false;
         domainName = "ruby.dashboard";
         collectorPort = 9002;
         managementPort = 9001;

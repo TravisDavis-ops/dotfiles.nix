@@ -30,7 +30,7 @@ with builtins; {
       autoStart = true;
     };
     services.nginx.virtualHosts.${cfg.domainName} = mkIf serverCfg.enable {
-      listen = [ serverCfg.bond];
+      listen = [ serverCfg.bond ];
       locations."/" = {
         proxyPass = "http://localhost:${toString cfg.hostPort}";
       };

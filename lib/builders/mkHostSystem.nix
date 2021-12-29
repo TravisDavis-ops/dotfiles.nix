@@ -18,8 +18,9 @@ let
   profiles = reduceToAttr (map (u: callProfile hostName u.name) users);
   noCheck = set: mapAttrs (k: v: v // { noCheck = true; }) set;
   userAccounts = map (u: mkUser u) users;
+  pkgs = nixpkgs.legacyPackages.${system};
 in
-lib.nixosSystem {
+lib.nixosSystem (with pkgs; {
   inherit system;
   modules = [
     {
@@ -29,11 +30,18 @@ lib.nixosSystem {
       i18n.defaultLocale = "en_US.UTF-8";
       time.timeZone = "America/Chicago";
 
+      environment = {
+        systemPackages = [ direnv nix-direnv ];
+        pathsToLink = [ "/share/nix-direnv" ];
+      };
+
       nix = {
-        package = nixpkgs.legacyPackages.${system}.nixUnstable;
+        package = nixUnstable;
         extraOptions = ''
           extra-experimental-features = nix-command
           extra-experimental-features = flakes
+          keep-outputs = true
+          keep-derivations = true
         '';
         maxJobs = lib.mkDefault cores;
         gc = {
@@ -46,6 +54,9 @@ lib.nixosSystem {
           dates = [ "weekly" ];
         };
       };
+      nixpkgs.overlays = [
+        (self: super: { nix-direnv = super.nix-direnv.override { enableFlakes = true; }; })
+      ];
 
       boot = {
         kernelPackages = lib.mkIf (hasAttr "package" kernel) kernel.package;
@@ -61,7 +72,7 @@ lib.nixosSystem {
       hardware = hardware // {
         enableRedistributableFirmware = true;
       };
-
+      users.groups = { input = { }; };
       fileSystems = boot // noCheck extra;
 
       swapDevices = swap;
@@ -89,4 +100,4 @@ lib.nixosSystem {
       };
     }
   ];
-}
+})

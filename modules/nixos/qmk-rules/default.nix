@@ -3,7 +3,7 @@ with lib;
 let cfg = config.os.p.qmk-rules;
 in
 {
-  options.os.p.qmk-rules= { enable = mkEnableOption "Qmk udev rules"; };
+  options.os.p.qmk-rules = { enable = mkEnableOption "Qmk udev rules"; };
 
   config = mkIf cfg.enable {
     services.udev = {

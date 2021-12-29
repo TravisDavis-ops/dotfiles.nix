@@ -8,20 +8,22 @@
 , gir-rs
 , gtk-layer-shell
 , gobject-introspection
+, pkg-config
 , stdenv
 , fetchFromGitHub
-, ... }:
-stdenv.mkDerication {
+, ...
+}:
+stdenv.mkDerivation {
   pname = "swayhide";
-  version = "v0.2.0";
+  version = "v0.1.0";
   src = fetchFromGitHub {
-    owner = "ErikReider";
+    owner = "TravisDavis-ops";
     repo = "SwayNotificationCenter";
-    rev = null;
-    sha256 = " ";
+    rev = "v0.1.0";
+    sha256 = "sha256-xo+M8dpqs2tbWQn49PR5ms3TlzMsv9SvY/QN7Jb/MT4=";
   };
 
-  buildInputs = with pkgs; [
+  buildInputs = [
     gtk3
     libhandy
     json-glib
@@ -29,12 +31,14 @@ stdenv.mkDerication {
     gtk-layer-shell
     gobject-introspection
   ];
-  nativeBuildInputs = with pkgs; [
+
+  nativeBuildInputs = [
     meson
     ninja
     vala
     pkg-config
   ];
+
   meta = with lib; {
     description = "";
     homepage = "";

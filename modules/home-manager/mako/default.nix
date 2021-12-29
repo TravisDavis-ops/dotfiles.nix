@@ -9,16 +9,16 @@ in
     programs.mako = {
       enable = true;
       anchor = "bottom-center";
-      backgroundColor="#24283b";
-      textColor="#c0caf5";
-      width=350;
-      margin="0,20,20";
-      padding="10";
-      borderSize=2;
-      borderColor="#414868";
-      borderRadius=5;
-      defaultTimeout=10000;
-      groupBy="summary";
+      backgroundColor = "#24283b";
+      textColor = "#c0caf5";
+      width = 350;
+      margin = "0,20,20";
+      padding = "10";
+      borderSize = 2;
+      borderColor = "#414868";
+      borderRadius = 5;
+      defaultTimeout = 10000;
+      groupBy = "summary";
 
     };
     systemd.user.services.notification-starter = {

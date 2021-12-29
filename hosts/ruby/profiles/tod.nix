@@ -7,15 +7,15 @@
       cocogitto
       swayhide
       nhentai
+      swaync
     ]) ++ (with pkgs; [
       bpytop
       sysstat
-      entr
-      vlc
-      zoxide
       bitwarden
       qbittorrent
       nixpkgs-fmt
+      nixpkgs-lint
+      nixpkgs-review
       exa
     ]);
     sessionVariables = {
@@ -63,19 +63,14 @@
       };
     };
   };
-  programs = {
-    direnv = {
-      enable = true;
-      enableFishIntegration = true;
-    };
-    fish = {
-      enable = true;
-    };
-  };
+  programs = { };
   local = {
     sway = { enable = true; };
     waybar = { enable = true; };
     mako = { enable = true; };
+    wofi = { enable = true; };
+    kitty = { enable = true; };
+    fish = { enable = true; };
     git = {
       enable = true;
       enableStore = true;

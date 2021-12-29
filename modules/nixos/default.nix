@@ -1,6 +1,8 @@
-{ pkgs, config, lib, ... }: let
+{ pkgs, config, lib, ... }:
+let
   cfg = config.os.p;
-in with lib; {
+in
+with lib; {
   imports = [
     ./docker
     ./openssh

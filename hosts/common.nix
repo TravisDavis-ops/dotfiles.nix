@@ -11,6 +11,7 @@
       waybar
       mako
       wofi
+      pop-icon-theme
       dmenu
       kitty
       firefox-wayland

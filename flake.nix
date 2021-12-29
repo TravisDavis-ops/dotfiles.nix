@@ -5,7 +5,7 @@
   '';
 
   inputs = {
-    nixpkgs.url = "github:NixOs/nixpkgs/nixos-21.11";
+    nixpkgs.url = "github:NixOs/nixpkgs/master";
     home-manager.url = "github:nix-community/home-manager/master";
     waypkgs.url = "github:nix-community/nixpkgs-wayland/master";
     flake-utils.url = "github:gytis-ivaskevicius/flake-utils-plus";
@@ -22,7 +22,7 @@
     {
       nixosConfigurations = import ./hosts { inherit system nixpkgs home-manager lib nur meta; };
       nixosModules = {
-         anime-hub = import ./modules/nixos/anime-hub;
+        anime-hub = import ./modules/nixos/anime-hub;
       };
       templates = import ./templates;
       inherit lib;
