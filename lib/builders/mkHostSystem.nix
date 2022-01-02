@@ -31,7 +31,7 @@ lib.nixosSystem (with pkgs; {
       time.timeZone = "America/Chicago";
 
       environment = {
-        systemPackages = [ direnv nix-direnv ];
+        systemPackages = [ direnv nix-direnv openssl SDL2 ];
         pathsToLink = [ "/share/nix-direnv" ];
       };
 

@@ -1,9 +1,29 @@
-exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP
+output * bg $HOME/.wallpaper fill
+exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
+exec hash dbus-update-activation-environment 2>/dev/null && \
+     dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP
+
+exec_always {
+  systemctl --user restart waybar.service
+  systemctl --user restart mako.service
+  systemctl --user restart neovim.service
+  lock
+}
+
+exec pulseaudio
 exec wl-paste -p -t text --watch clipman store -P --
 exec autotiling
-exec inactive-windows-transparency.py --opacity 0.50 &
+exec inactive-windows-transparency.py --opacity 0.70 &
 
-include /etc/sway/config.d/*
+for_window [app_id="pavucontrol"] floating enable; resize set 600px 400px
+
+for_window [app_id="fkitty"] floating enable; resize set 600px 400px
+for_window [app_id="mkitty"] floating enable; resize set 600px 400px
+for_window [app_id="ekitty"] floating enable; resize set 600px 400px
+
+
+gaps inner 5
+gaps outer 10
 
 output DP-1 {
     mode 1920x1080@60Hz
@@ -23,47 +43,81 @@ xwayland enable
 workspace 1 output DP-1
 workspace 2 output DP-1
 workspace 3 output DP-1
+
 workspace 4 output DP-2
 workspace 5 output DP-2
 workspace 6 output DP-2
 
 bindsym Mod1+Shift+q kill
 bindsym Mod1+Shift+r reload
+
 bindsym Mod1+Return exec kitty
-bindsym Mod4+l exec swaylock
-bindsym Mod1+p exec wofi --show run
-bindsym Mod4+r exec wofi --show run
+bindsym Mod1+Shift+Return exec kitty --class=fkitty
+
+bindsym Mod4+l exec lock
+
+bindsym Mod1+s exec killall -SIGUSR1 waybar
+
+bindsym Mod1+p exec wofi -x-offset
+bindsym Mod4+r exec wofi -x-offest
+
 bindsym Mod1+Shift+p exec dmenu_run
 bindsym Mod4+Shift+r exec dmenu_run
-bindsym Mod4+e exec kitty ranger
+
+bindsym Mod4+e exec kitty --class=ekitty  ranger
+
+bindsym Mod1+c move position center
+bindsym Mod1+Shift+c move position mouse
+
 bindsym Mod1+f fullscreen
 bindsym Mod1+Shift+f floating toggle
-bindsym Mod1+Space focus floating
-bindsym Mod1+Tab workspace next
-bindsym Mod1+Shift+Tab workspace prev
+
+bindsym Mod1+Space focus mode_toggle
+
+bindsym Mod1+Tab workspace next_on_output
+bindsym Mod1+Shift+Tab workspace prev_on_output
+
 bindsym Mod1+u workspace 1
 bindsym Mod1+i workspace 2
 bindsym Mod1+o workspace 3
+
 bindsym Mod1+Shift+u move container to workspace 1
 bindsym Mod1+Shift+i move container to workspace 2
 bindsym Mod1+Shift+o move container to workspace 3
+
 bindsym Mod4+u workspace 4
 bindsym Mod4+i workspace 5
 bindsym Mod4+o workspace 6
+
 bindsym Mod4+Shift+u move container to workspace 4
 bindsym Mod4+Shift+i move container to workspace 5
 bindsym Mod4+Shift+o move container to workspace 6
+
 bindsym Mod1+Shift+Backspace  move scratchpad
 bindsym Mod1+Backspace  scratchpad show
+
 bindsym Mod1+h focus left
 bindsym Mod1+j focus down
 bindsym Mod1+k focus up
 bindsym Mod1+l focus right
+
 bindsym Mod1+Shift+h move left
 bindsym Mod1+Shift+j move down
 bindsym Mod1+Shift+k move up
 bindsym Mod1+Shift+l move right
+
 bindsym Mod1+Ctrl+h resize shrink width 32 px or 32 ppt
 bindsym Mod1+Ctrl+j resize grow height 32 px or 32 ppt
 bindsym Mod1+Ctrl+k resize shrink height 32 px or 32 ppt
 bindsym Mod1+Ctrl+l resize grow width 32 px or 32 ppt
+
+bindsym Mod1+1 exec firefox
+bindsym Mod1+2 exec neovide-client
+bindsym Mod1+3 NOP
+bindsym Mod1+4 NOP
+bindsym Mod1+5 NOP
+bindsym Mod1+6 NOP
+bindsym Mod1+7 NOP
+bindsym Mod1+8 NOP
+bindsym Mod1+9 NOP
+bindsym Mod1+0 NOP

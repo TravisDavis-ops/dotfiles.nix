@@ -4,19 +4,15 @@
   programs.home-manager.enable = true;
   home = {
     packages = (with nur; [
-      cocogitto
       swayhide
       nhentai
-      swaync
     ]) ++ (with pkgs; [
       bpytop
       sysstat
       bitwarden
       qbittorrent
-      nixpkgs-fmt
-      nixpkgs-lint
-      nixpkgs-review
       exa
+      nerdfonts
     ]);
     sessionVariables = {
       CLUTTER_BACKEND = "wayland";
@@ -24,13 +20,11 @@
       GDK_DPI_SCALE = 1;
       MOZ_ENABLE_WAYLAND = 1;
       QT_QPA_PLATFORM = "wayland-egl";
-      QT_WAYLAND_DISABLE_WINDOWDECORATION = 1;
       SDL_VIDEODRIVER = "wayland";
+      QT_WAYLAND_DISABLE_WINDOWDECORATION = 1;
       WLR_NO_HARDWARE_CURSORS = 1;
       _JAVA_AWT_WM_NONREPARENTING = 1;
       _JAVA_OPTIONS = "-Dawt.useSystemAAFontSettings=on";
-      EDITOR = "nvim";
-      VISUAL = "nvim";
     };
   };
 
@@ -63,8 +57,11 @@
       };
     };
   };
+  fonts.fontconfig.enable = true;
+
   programs = { };
   local = {
+    mpd-player = { enable = true; };
     sway = { enable = true; };
     waybar = { enable = true; };
     mako = { enable = true; };
@@ -79,11 +76,13 @@
     };
     neovim = {
       enable = true;
-      enableFull = true;
+      enableQol = true;
       enableRust = true;
       enablePython = true;
       enableNix = true;
-      enableC98 = true;
+      enableC99 = true;
+      enableGui = true;
+      port = 9000;
     };
     ranger = {
       enable = true;

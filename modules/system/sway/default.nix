@@ -17,8 +17,7 @@ in
     };
     systemConfig = mkOption {
       description = "a global config to be placed in etc/sway/";
-      type = types.path;
-      default = "";
+      type = typs.nullOr types.path;
     };
     autoLogin = mkOption {
       type = types.nullOr types.str;
@@ -40,10 +39,6 @@ in
           user = "${cfg.autoLogin}";
         };
       };
-    };
-
-    environment.etc = mkIf ((stringLength cfg.systemConfig) > 0) {
-      "sway/config".source = cfg.systemConfig;
     };
   };
 }

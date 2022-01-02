@@ -55,7 +55,7 @@
 
     neovim = {
       enable = true;
-      enableFull = true;
+      enableQol = true;
       enableRust = true;
       enablePython = true;
       enableNix = true;

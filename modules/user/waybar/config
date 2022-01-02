@@ -1,11 +1,19 @@
-{
+[{
     "position": "top",
     "height": 30,
-    "modules-left": ["sway/workspaces"],
-    "modules-right": ["network", "pulseaudio", "battery", "clock", "tray"],
+    "modules-left": [ "sway/workspaces", "custom/stashed" ],
+    "modules-right": ["mpd", "network", "pulseaudio", "battery", "clock", "tray"],
     "sway/workspaces": {
         "disable-scroll": true,
         "all-outputs": false,
+        "persistent_workspaces": {
+            "1":["DP-1"],
+            "2":["DP-1"],
+            "3":["DP-1"],
+            "4":["DP-2"],
+            "5":["DP-2"],
+            "6":["DP-2"]
+            },
         "format": "{icon}",
         "format-icons": {
             "1": "一",
@@ -13,35 +21,32 @@
             "3": "三",
             "4": "四",
             "5": "五",
-            "6": "六",
-            "7": "七",
-            "8": "八",
-            "9": "九",
-            "10": "十"
+            "6": "六"
+        }
+    },
+    "mpd":{
+        "format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}: Playing [{title}]",
+        "format-stopped": "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}🎧 No Song",
+        "on-click": "kitty --class mkitty ncmpcpp",
+        "random-icons": {
+             "off": "<span color='#f53c3c'></span>",
+             "on": " "
+        },
+        "repeat-icons": {
+             "on": " "
+        },
+        "single-icons": {
+             "on": "1 "
+        },
+        "state-icons": {
+             "paused": "",
+             "playing": ""
         }
     },
     "clock": {
         "format": " {:%H:%M}",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "format-alt": "{:%Y-%m-%d}"
-    },
-    "battery": {
-        "bat": "BAT1",
-        "design-capacity": true,
-        "states": {
-            "warning": 30,
-            "critical": 15
-        },
-        "format-discharging": "{icon}  {capacity}%",
-        "format": " {capacity}%",
-        "format-alt": "{time} {icon}",
-        "format-icons": [
-            "",
-            "",
-            "",
-            "",
-            ""
-        ]
     },
     "network": {
         "format-wifi": "  {essid}",
@@ -67,5 +72,23 @@
     "tray": {
         "icon-size": 21,
         "spacing": 10
+    },
+    "custom/stashed": {
+        "exec": "swaymsg -t get_tree | jq .nodes[0].nodes[].floating_nodes[].name | wc -l",
+        "interval": 2,
+        "format": "⻤:{}",
     }
-}
+
+},{
+    "position": "bottom",
+    "height": 30,
+    "modules-center": ["wlr/taskbar"],
+    "wlr/taskbar": {
+        "format": "{icon}",
+        "icon-size": 14,
+        "icon-theme": "Numix-Circle",
+        "tooltip-format": "{title}",
+        "on-click": "activate",
+        "on-click-middle": "close"
+    }
+}]

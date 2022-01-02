@@ -48,7 +48,7 @@ builders.mkHostSystem rec {
   ];
 
   network = {
-    nameservers = [ "192.168.1.64" "1.1.1.1" "8.8.8.8" ];
+    nameservers = [ "192.168.1.64:8080" "1.1.1.1" "8.8.8.8" ];
     interfaces = {
       enp9s0.useDHCP = true;
       wlan0.useDHCP = true;
@@ -63,7 +63,16 @@ builders.mkHostSystem rec {
 
 
   modules = {
-    anime-hub.enable = true;
+    # gpu crashes could be jellyfin
+    # anime-hub.enable = true
+    anime-hub.containers = {
+      mediaFolder = "/mnt";
+      komga = {
+        enable = true;
+        hostPort = 8081;
+        domainName = "ruby";
+      };
+    };
     docker.enable = true;
     flatpak.enable = true;
     openssh.enable = true;

@@ -3,16 +3,12 @@ let callPackage = lib.callPackageWith pkgs;
 in
 {
   nhentai = callPackage ./nhentai { pythonPackages = pkgs.python3Packages; };
-  cocogitto = callPackage ./cocogitto { };
-  #toml-bombadil = callPackage ./toml-bombadil {};
-  xxh = callPackage ./xxh { pythonPackages = pkgs.python39Packages; };
   mangodl = callPackage ./mangodl { };
+  xxh = callPackage ./xxh { pythonPackages = pkgs.python39Packages; };
+  cocogitto = callPackage ./cocogitto { };
   swayhide = callPackage ./swayhide { };
   swaync = callPackage ./swaync { };
-  corsair-cpro-led = callPackage ./corsair-cpro-led {
-    inherit (pkgs) fetchFromGitHub;
-    kernel = pkgs.linuxPackages.kernel;
-  };
+  nwg-dock = callPackage ./nwg-dock { };
   one-step-from-eden = (import ./one-step-from-eden { inherit lib; }) pkgs;
   cultist-simulator = (import ./cultist-simulator { inherit lib; }) pkgs;
   kentucky-route-zero = (import ./kentucky-route-zero { inherit lib; }) pkgs;

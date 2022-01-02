@@ -1,1 +1,10 @@
-<html><body>You are being <a href="https://raw.githubusercontent.com/someoneinjd/dotfiles/main/tokyonight/config/wofi/config">redirected</a>.</body></html>
+style=.config/wofi/style.css
+show=drun
+width=500
+height=500
+x-offset=0
+always_parse_args=true
+show_all=true
+layer=overlay
+insensitive=true
+prompt=

@@ -19,7 +19,6 @@ set shiftwidth=4
 set expandtab
 set smartindent
 set autoindent
-set laststatus=0
 set number
 set background=dark
 set showtabline=1
@@ -32,7 +31,9 @@ set clipboard=unnamedplus
 set foldmethod=indent
 set autoread
 set laststatus=2
+set guifont=Cascadia\ Code:h8
 " - Directives
+"
 filetype plugin indent on
 syntax enable
 
@@ -40,9 +41,17 @@ syntax enable
 let mapleader = ";"
 let g:startify_session_dir = '~/.config/nvim/session'
 let g:tokyonight_style = "night"
+let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
+let g:vista_default_executive = 'coc'
 
-" Register the components:
+let g:neovide_cursor_vfx_mode = "railgun"
 
+let g:vista#renderer#enable_icons = 1
+let g:vista#renderer#icons = {
+\   "function": "𝑓",
+\   "variable": "𝓥",
+\   "struct": "{}",
+\  }
 
 
 autocmd BufWritePre * %s/\s\+$//e
@@ -69,6 +78,7 @@ map <leader>rf :set foldmethod=indent<CR>zM<CR>
 map <leader>uf :set foldmethod=manual<CR>zR<CR>
 map <leader>vt :VspTerm <CR>
 map <leader>st :SpTerm <CR>
+map <leader>vv :Vista coc !<CR>
 
 tnoremap <Esc> <C-\><C-n>
 nnoremap o o<Esc>
@@ -133,11 +143,20 @@ endfunction
 
 colorscheme tokyonight
 
+function! ConnectedTo() abort
+    if empty(glob( v:severname )) && has("gui")
+        return "🔌:".v:servername
+    endif
+endfunction
 
 let g:lightline = {
   \  'colorscheme': 'tokyonight',
   \  'active': {
-  \     'left': [[ 'coc_info', 'coc_hints', 'coc_errors', 'coc_warnings', 'coc_ok' ], [ 'coc_status'  ]]
-  \   }
+  \    'left': [["connected_to"],[ 'coc_errors', 'coc_warnings', 'coc_ok' ], [ 'coc_status'  ]]
+  \  },
+  \  'component_function': {
+  \    'method': 'ConnectedTo'
+  \  }
   \ }
+
 call lightline#coc#register()

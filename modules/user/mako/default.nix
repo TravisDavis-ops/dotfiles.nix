@@ -21,9 +21,9 @@ in
       groupBy = "summary";
 
     };
-    systemd.user.services.notification-starter = {
+    systemd.user.services.mako = {
       Unit = {
-        Description = "Notification daemon";
+        Description = "mako a notification daemon";
         PartOf = [ "graphical.target" ];
         After = [ "graphical.target" ];
       };

@@ -12,5 +12,4 @@ with lib; {
     ./sway
     ./mpd
   ];
-
 }

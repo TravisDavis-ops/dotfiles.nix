@@ -18,6 +18,7 @@ in
   };
 
   config = mkIf cfg.enable {
+    environment.systemPackages = with pkgs; [ mpc_cli ];
     services.mpd = {
       enable = true;
       extraConfig = mkIf cfg.pulseFix ''
@@ -25,6 +26,12 @@ in
           type "pulse"
           name "Pulseaudio"
           server "127.0.0.1" # MPD must connect to the local sound server
+        }
+        audio_output {
+            type "fifo"
+            name "visualizer"
+            path "/tmp/mpd.fifo"
+            format "44100:16:2"
         }
       '';
       musicDirectory = cfg.musicPath;
