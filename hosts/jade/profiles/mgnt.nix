@@ -5,25 +5,10 @@
   home.sessionVariables = {
     EDITOR = "nvim";
     VISUAL = "nvim";
-    TERM = "xterm";
   };
   programs = {
     htop = {
       enable = true;
-      settings = {
-        delay = 15;
-        fields = with config.lib.htop.fields; [
-          PID
-          USER
-          STATE
-          PERCENT_CPU
-          PERCENT_MEM
-          TIME
-        ];
-        highlight_base_name = 1;
-        highlight_threads = 1;
-      } // (with config.lib.htop;
-        leftMeters [ (bar "AllCPUs2") (bar "Memory") ]);
     };
   };
   local = {
@@ -45,6 +30,5 @@
       enablePreviews = true;
       enableVcs = true;
     };
-    nextcloud-cron.enable = true;
   };
 }

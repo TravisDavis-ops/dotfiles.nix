@@ -62,6 +62,7 @@ builders.mkHostSystem {
   modules = {
     openssh.enable = true;
     docker.enable = true;
+    nextcloud-cron.enable = true;
   };
 
   cores = 1;
