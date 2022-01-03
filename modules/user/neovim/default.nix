@@ -33,25 +33,25 @@ let
 in
 with builtins;  {
   options.local.neovim = {
-    enable = mkEnableOption "Enable Neovim";
+    enable = mkEnableOption "neovim";
 
     # qol plugin set
-    enableQol = mkEnableOption "Enable quailty of life plugins";
+    enableQol = mkEnableOption "quailty of life plugins";
 
     # Cxx plugin set
-    enableC99 = mkEnableOption "Enable C99 related plugins";
+    enableC99 = mkEnableOption "Cxx related plugins";
 
     # Nix plugin set
-    enableNix = mkEnableOption "Enable Nix related plugins";
+    enableNix = mkEnableOption "nix related plugins";
 
     # Rust plugin set
-    enableRust = mkEnableOption "Enable Rust related plugins";
+    enableRust = mkEnableOption "rust related plugins";
 
     # Python plugin set
-    enablePython = mkEnableOption "Enable Python related plugins";
+    enablePython = mkEnableOption "python related plugins";
 
     # Gui configuration
-    enableGui = mkEnableOption "Enable Neovide as a frontend to neovim";
+    enableGui = mkEnableOption "neovide frontend";
 
     port = mkOption {
       type = types.port;
@@ -70,43 +70,44 @@ with builtins;  {
     let
       neovide-server = pkgs.writeShellScriptBin "neovide-server" ''
         source /etc/profile
+        notify-send "Starting Server";
         ${pkgs.neovim}/bin/nvim -n --headless --listen localhost:${toString cfg.port}
-      '';
-      neovide-editor = pkgs.writeShellScriptBin "neovide-editor" ''
-        ${pkgs.neovide}/bin/neovide --nofork --wayland-app-id neovide-editor $@
       '';
 
       neovide-client = pkgs.writeShellScriptBin "neovide-client" ''
-        ${pkgs.neovide}/bin/neovide --remote-tcp localhost:${toString cfg.port} --wayland-app-id neovide-client $@
+        if [ -z "$(pgrep -af neovide-client)" ]
+          then
+            ${pkgs.neovide}/bin/neovide --remote-tcp localhost:${toString cfg.port} --wayland-app-id neovide-client
+          else
+            notify-send "Focusing Client";
+            ${pkgs.sway}/bin/swaymsg "[con_mark=client]" focus
+        fi
       '';
 
-      open-remotely = pkgs.writeShellScriptBin "open-remotely" ''
+      open-remote = pkgs.writeShellScriptBin "open-remote" ''
         source /etc/profile
-        notify-send Opening "in neovide";
-        if  [ -z "$(pgrep -af neovide-server)" ]
+        if [ -z "$(pgrep -af neovide-server)" ]
           then
-            systemctl --user restart neovim.service
-            ${neovide-client}/bin/neovide-client
-          else
-            ${neovide-client}/bin/neovide-client
+            systemctl --user restart neovim.service;
         fi
-        ${pkgs.neovim-remote}/bin/nvr --servername localhost:${toString cfg.port} --remote $@;
+        ${pkgs.neovim-remote}/bin/nvr --nostart --servername localhost:${toString cfg.port} $@
+        source ${neovide-client}/bin/neovide-client;
       '';
 
       nvr-safe = pkgs.writeShellScriptBin "nvr-safe" ''
-        ${pkgs.neovim-remote}/bin/nvr --servername localhost:${toString cfg.port} --remote-send "<ESC><ESC>"
-        ${pkgs.neovim-remote}/bin/nvr --servername localhost:${toString cfg.port} $@
+        ${pkgs.neovim-remote}/bin/nvr --nostart --servername localhost:${toString cfg.port} -cc "<ESC>" -c "<CR>" $@
       '';
     in
     {
       home.sessionVariables = {
-        REMOTE = if cfg.enableGui then ''${open-remotely}/bin/open-remotely'' else "nvim";
-        VISUAL = if cfg.enableGui then ''${neovide-editor}/bin/neovide-editor'' else "nvim";
+        NVIM_REMOTE = if cfg.enableGui then ''${open-remote}/bin/open-remote'' else "nvim";
+        NVIM_SEND = if cfg.enableGui then ''${nvr-safe}/bin/nvr-safe'' else "nvim";
         EDITOR = "nvim";
+        VISUAL = "nvim";
       };
 
       home.packages = baseDeps ++ (if cfg.enableQol then qolDeps else [ ])
-        ++ (if cfg.enableGui then [ nvr-safe pkgs.neovide neovide-server open-remotely neovide-editor neovide-client ] else [ ])
+        ++ (if cfg.enableGui then [ nvr-safe pkgs.neovide neovide-server open-remote neovide-client ] else [ ])
         ++ (if cfg.enableNix then nixDeps else [ ])
         ++ (if cfg.enableRust then rustDeps else [ ])
         ++ (if cfg.enableC99 then c99Deps else [ ])

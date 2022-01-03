@@ -39,7 +39,7 @@ syntax enable
 
 " - Plugin Settings
 let mapleader = ";"
-let g:startify_session_dir = '~/.config/nvim/session'
+let g:startify_session_dir = '~/.config/nvim/sessions'
 let g:tokyonight_style = "night"
 let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
 let g:vista_default_executive = 'coc'
@@ -58,6 +58,8 @@ autocmd BufWritePre * %s/\s\+$//e
 autocmd FocusGained,BufEnter * :checktime
 autocmd FocusGained,BufWritePost * :syntax sync fromstart
 autocmd FileChangedShellPost * echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
+
+autocmd BufEnter * :SSave
 
 augroup CursorLine
     au!
@@ -79,6 +81,10 @@ map <leader>uf :set foldmethod=manual<CR>zR<CR>
 map <leader>vt :VspTerm <CR>
 map <leader>st :SpTerm <CR>
 map <leader>vv :Vista coc !<CR>
+" remap quit to close
+"
+cnoremap quit close
+cnoremap q clo
 
 tnoremap <Esc> <C-\><C-n>
 nnoremap o o<Esc>
@@ -144,8 +150,10 @@ endfunction
 colorscheme tokyonight
 
 function! ConnectedTo() abort
-    if empty(glob( v:severname )) && has("gui")
+    if v:severname = "localhost:9000";
         return "🔌:".v:servername
+    else
+        return "Disconnected"
     endif
 endfunction
 

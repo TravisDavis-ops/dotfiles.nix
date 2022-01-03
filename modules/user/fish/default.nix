@@ -18,10 +18,19 @@ in
       fish = {
         enable = true;
         functions = {
-          startify = {
+          npushd = {
             body = ''
+              pushd $argv
               set -l pwd (pwd)
-              ${pkgs.neovim-remote}/bin/nvr --servername localhost:${toString config.local.neovim.port} --remote-send "<ESC><ESC>:cd $pwd <CR> :Startify <CR>"
+              zoxide add $pwd
+              ${pkgs.neovim-remote}/bin/nvr --servername localhost:${toString config.local.neovim.port} --remote-send "<ESC><ESC>:cd $pwd <CR>"
+            '';
+          };
+          npopd = {
+            body = ''
+              popd
+              set -l pwd (pwd)
+              ${pkgs.neovim-remote}/bin/nvr --servername localhost:${toString config.local.neovim.port} --remote-send "<ESC><ESC>:cd $pwd <CR>"
             '';
           };
         };
@@ -30,6 +39,8 @@ in
           la = "exa --icons --long";
           lg = "exa --icons --git";
           lt = "exa --icons --long  --tree --level=3";
+          fcd = "npushd (exa -D | fzf --height=20%)";
+          dc = "npopd";
         };
         plugins = [
           {
@@ -75,8 +86,6 @@ in
           set -g fish_pager_color_prefix $cyan
           set -g fish_pager_color_completion $foreground
           set -g fish_pager_color_description $comment
-          set -g snorin_chevrons red green yellow blue magenta cyan white brred brgreen bryellow brblue brmagenta brcyan brwhite
-
 
           set -g snorin_random_chevrons 3
           zoxide init fish | source

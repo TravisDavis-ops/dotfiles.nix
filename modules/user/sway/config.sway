@@ -21,6 +21,8 @@ for_window [app_id="fkitty"] floating enable; resize set 600px 400px
 for_window [app_id="mkitty"] floating enable; resize set 600px 400px
 for_window [app_id="ekitty"] floating enable; resize set 600px 400px
 
+for_window [app_id="neovide-client"] mark "editor";
+assign [app_id="neovide-client"] workspace 3;
 
 gaps inner 5
 gaps outer 10
@@ -49,6 +51,9 @@ workspace 5 output DP-2
 workspace 6 output DP-2
 
 bindsym Mod1+Shift+q kill
+
+bindsym --release button8 kill
+
 bindsym Mod1+Shift+r reload
 
 bindsym Mod1+Return exec kitty
