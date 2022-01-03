@@ -11,5 +11,6 @@ with lib; {
     ./anime-hub
     ./sway
     ./mpd
+    ./nextcloud-cron
   ];
 }
