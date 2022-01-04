@@ -1,23 +1,32 @@
-{ mkUser
+{ system
+, nixpkgs
+, lib
+, mkUser
+, reduceToAttr
+, callProfile
 , ...
 }: { hostName
-   , bootloader
+   , bootloader ? { }
    , hardware ? { }
-   , kernel
-   , drives
+   , kernel ? { }
+   , drives ? { }
    , users
    , network ? { }
    , wifi ? { }
    , modules ? { }
    , services ? { }
    , cores ? 1
-   }:
-let
+   , ...
+ }: with builtins;
+ let
+  inherit (drives) boot extra swap;
+  noCheck = set: mapAttrs (k: v: v // { noCheck = true; }) set;
+
   userAccounts = map (u: mkUser u) users;
-in
-{
-  system = {
-    inherit services;
+  profiles = reduceToAttr (map (u: callProfile hostName u.name) users);
+  pkgs = nixpkgs.legacyPackages.${system};
+in with pkgs; {
+  host = {
     imports = [ ../../modules/system ] ++ userAccounts;
 
     i18n.defaultLocale = "en_US.UTF-8";
@@ -47,6 +56,7 @@ in
         dates = [ "weekly" ];
       };
     };
+
     nixpkgs.overlays = [
       (self: super: { nix-direnv = super.nix-direnv.override { enableFlakes = true; }; })
     ];
@@ -65,11 +75,12 @@ in
     hardware = hardware // {
       enableRedistributableFirmware = true;
     };
+
     users.groups = { input = { }; };
+
     fileSystems = boot // noCheck extra;
 
     swapDevices = swap;
-
 
     networking = {
       inherit hostName;
@@ -77,9 +88,10 @@ in
       wireless = wifi;
     } // network;
 
-
+    inherit services;
     os.p = modules;
     system.stateVersion = "21.05";
   };
-  user = { };
+
+  inherit profiles;
 }

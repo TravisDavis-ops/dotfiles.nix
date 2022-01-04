@@ -1,7 +1,6 @@
 {
   description = ''
     Nixos flake for deploying various system configrations & Home-manager profiles.
-    base on [NixOS Configuration with Flakes](https://jdisaacs.com/blog/nixos-config/).
   '';
 
   inputs = {
@@ -12,6 +11,7 @@
   };
 
   outputs = { self, nixpkgs, home-manager, flake-utils, nixos-gen, ... }@repos:
+    with builtins;
     let
       system = "x86_64-linux";
       meta = import ./meta.nix { };
@@ -22,24 +22,24 @@
     in
     (
       let
-        dist = {
+        dist = let
+            modules = (lib.builder.mkHostModules hosts.iso);
+        in {
           iso = nixos-gen.nixosGenerate {
             inherit pkgs;
             modules = with pkgs; [
+              # use home-manager for user environment
+              home-manager.nixosModules.home-manager
+
+              hosts.iso.host
+
               {
-                imports = [ ./modules/system ];
-                nix = {
-                  package = nixUnstable;
-                  extraOptions = ''
-                    extra-experimental-features = nix-command
-                    extra-experimental-features = flakes
-                    keep-outputs = true
-                    keep-derivations = true
-                  '';
-                };
-                environment = {
-                  systemPackages = [ direnv nix-direnv ];
-                  pathsToLink = [ "/share/nix-direnv" ];
+                home-manager = {
+                  extraSpecialArgs = { inherit nur; };
+                  useGlobalPkgs = true;
+                  useUserPackages = true;
+                  sharedModules = [ ./modules/user ];
+                  users = hosts.iso.profiles;
                 };
               }
             ];
@@ -48,7 +48,7 @@
         };
       in
       {
-        nixosConfigurations = hosts;
+        nixosConfigurations = removeAttrs hosts [ "iso" ];
         nixosModules = {
           anime-hub = import ./modules/nixos/anime-hub;
         };

@@ -2,8 +2,7 @@
 let
   hostName = "ruby";
   drives = import ./drives;
-in
-builders.mkHostSystem rec {
+in builders.mkHostSystem rec {
   inherit hostName drives;
 
   bootloader = {

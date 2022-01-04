@@ -9,4 +9,5 @@ in
   garnet = import ./garnet { inherit pkgs nur builders common; };
   azure = import ./azure { inherit pkgs nur builders common; };
   jade = import ./jade { inherit pkgs nur builders common; };
+  iso = import ./iso { inherit pkgs nur builders common; };
 }

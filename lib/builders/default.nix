@@ -1,17 +1,16 @@
 { system, nixpkgs, nur, home-manager, ... }@inputs: rec {
 
-  callPackage = inputs.callPackageWith inputs;
+  callPackage = inputs.callPackageWith (inputs // {
+    inherit (nixpkgs) lib;
+    inherit mkUser mkHostModules;
+  });
 
-  mkProfile = callPackage ./mkProfile.nix { lib = nixpkgs.lib; };
 
   mkUser = import ./mkUser.nix;
-
-  mkHostSystem = callPackage ./mkHostSystem.nix {
-    inherit mkUser;
-    lib = nixpkgs.lib;
-  };
-
   mkGogPackage = import ./mkGogPackage.nix;
-  mkInterface = import ./mkInterface.nix;
-  mkPeer = import ./mkPeer.nix;
+
+  mkProfile = callPackage ./mkProfile.nix {};
+  mkHostModules = callPackage ./mkHostModules.nix {};
+  mkHostSystem = callPackage ./mkHostSystem.nix { };
+
 }
