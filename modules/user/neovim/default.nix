@@ -57,7 +57,10 @@ with builtins;  {
       type = types.port;
       default = 8096;
     };
-
+    sessionDirectory = mkOption {
+      type = types.str;
+      default = "/";
+    };
     # More configurations
     extraConfig = mkOption {
       description = "Append additonal configuration";
@@ -70,7 +73,6 @@ with builtins;  {
     let
       neovide-server = pkgs.writeShellScriptBin "neovide-server" ''
         source /etc/profile
-        notify-send "Starting Server";
         ${pkgs.neovim}/bin/nvim -n --headless --listen localhost:${toString cfg.port}
       '';
 
@@ -79,9 +81,9 @@ with builtins;  {
           then
             ${pkgs.neovide}/bin/neovide --remote-tcp localhost:${toString cfg.port} --wayland-app-id neovide-client
           else
-            notify-send "Focusing Client";
-            ${pkgs.sway}/bin/swaymsg "[con_mark=client]" focus
+            notify-send "Focusing client window";
         fi
+        ${pkgs.sway}/bin/swaymsg [app_id=neovide-client] focus
       '';
 
       open-remote = pkgs.writeShellScriptBin "open-remote" ''
@@ -95,8 +97,9 @@ with builtins;  {
       '';
 
       nvr-safe = pkgs.writeShellScriptBin "nvr-safe" ''
-        ${pkgs.neovim-remote}/bin/nvr --nostart --servername localhost:${toString cfg.port} -cc "<ESC>" -c "<CR>" $@
+        ${pkgs.neovim-remote}/bin/nvr --nostart --servername localhost:${toString cfg.port} $@
       '';
+
     in
     {
       home.sessionVariables = {
@@ -113,7 +116,7 @@ with builtins;  {
         ++ (if cfg.enableC99 then c99Deps else [ ])
         ++ (if cfg.enablePython then pythonDeps else [ ]);
 
-      systemd.user.services.neovide = mkIf cfg.enableGui {
+      systemd.user.services.neovide-server = mkIf cfg.enableGui {
         Unit = {
           Description = "neovide server";
           After = [ "default.target" ];

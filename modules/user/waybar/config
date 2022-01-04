@@ -76,13 +76,18 @@
     "custom/stashed": {
         "exec": "swaymsg -t get_tree | jq .nodes[0].nodes[].floating_nodes[].name | wc -l",
         "interval": 2,
-        "format": "⻤:{}",
+        "format": "⻤:{}"
     }
 
 },{
     "position": "bottom",
     "height": 30,
+    "modules-right": [ "custom/cpu-usage" ],
     "modules-center": ["wlr/taskbar"],
+    "custom/cpu-usage": {
+        "exec": "echo 99%",
+        "interval": 2
+    },
     "wlr/taskbar": {
         "format": "{icon}",
         "icon-size": 14,

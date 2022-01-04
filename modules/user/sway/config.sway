@@ -3,6 +3,8 @@ exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
 exec hash dbus-update-activation-environment 2>/dev/null && \
      dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP
 
+exec flatpak run com.valvesoftware.Steam -silent
+
 exec_always {
   systemctl --user restart waybar.service
   systemctl --user restart mako.service
@@ -22,11 +24,13 @@ for_window [app_id="mkitty"] floating enable; resize set 600px 400px
 for_window [app_id="ekitty"] floating enable; resize set 600px 400px
 
 for_window [app_id="neovide-client"] mark "editor";
-assign [app_id="neovide-client"] workspace 3;
+
+assign [app_id=neovide-client] workspace 3
 
 gaps inner 5
 gaps outer 10
 
+input * xkb_numlock enabled|disabled
 output DP-1 {
     mode 1920x1080@60Hz
     pos 0 1080

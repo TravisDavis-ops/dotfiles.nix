@@ -32,6 +32,14 @@ set foldmethod=indent
 set autoread
 set laststatus=2
 set guifont=Cascadia\ Code:h8
+set sessionoptions-=globals
+set sessionoptions-=localoptions
+set sessionoptions-=options
+set sessionoptions-=folds
+set sessionoptions-=winpos
+set sessionoptions-=winsize
+set sessionoptions-=buffers
+set sessionoptions-=resize
 " - Directives
 "
 filetype plugin indent on
@@ -40,26 +48,17 @@ syntax enable
 " - Plugin Settings
 let mapleader = ";"
 let g:startify_session_dir = '~/.config/nvim/sessions'
+let g:startify_change_to_vcs_root  = 1
+
+let g:startify_change_to_dir = 0
 let g:tokyonight_style = "night"
-let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
-let g:vista_default_executive = 'coc'
-
 let g:neovide_cursor_vfx_mode = "railgun"
-
-let g:vista#renderer#enable_icons = 1
-let g:vista#renderer#icons = {
-\   "function": "𝑓",
-\   "variable": "𝓥",
-\   "struct": "{}",
-\  }
-
 
 autocmd BufWritePre * %s/\s\+$//e
 autocmd FocusGained,BufEnter * :checktime
 autocmd FocusGained,BufWritePost * :syntax sync fromstart
 autocmd FileChangedShellPost * echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
 
-autocmd BufEnter * :SSave
 
 augroup CursorLine
     au!
@@ -67,6 +66,11 @@ augroup CursorLine
     au WinLeave * setlocal nocursorline
 augroup END
 
+nmap <silent> <leader>mw :call ()<CR>
+nmap <silent> <leader>pw :call DoWindowSwap()<CR>
+
+command! -nargs=0 MarkWindow :call s:mark_window()
+command! -nargs=0 GotoWindow :call s:goto_mark()
 command! -nargs=0 ShowDocs :call s:show_documentation()
 command! -nargs=0 Format :call CocAction('format')
 command! -nargs=? Fold :call CocAction('fold', <f-args>)
@@ -76,6 +80,7 @@ command! -nargs=* VspTerm sp | terminal <args>
 
 map Q <NOP>
 map gQ <NOP>
+
 map <leader>rf :set foldmethod=indent<CR>zM<CR>
 map <leader>uf :set foldmethod=manual<CR>zR<CR>
 map <leader>vt :VspTerm <CR>
@@ -83,22 +88,22 @@ map <leader>st :SpTerm <CR>
 map <leader>vv :Vista coc !<CR>
 " remap quit to close
 "
-cnoremap quit close
-cnoremap q clo
-
 tnoremap <Esc> <C-\><C-n>
 nnoremap o o<Esc>
 nnoremap O O<Esc>
 
+nnoremap <C-m> :MarkWindow
+nnoremap <C-'> :GotoWindow
+
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-H><C-H>
+nnoremap <C-H> <C-W><C-H>
 
 nnoremap <C-S-J> <C-W><C-S-J>
 nnoremap <C-S-K> <C-W><C-S-K>
 nnoremap <C-S-L> <C-W><C-S-L>
-nnoremap <C-S-H> <C-H><C-S-H>
+nnoremap <C-S-H> <C-W><C-S-H>
 
 nnoremap <S-Tab> :tabnext<cr>
 nnoremap <silent> gd <Plug>(coc-definition)
@@ -146,6 +151,25 @@ function! s:todo() abort
     copen
   endif
 endfunction
+function! s:mark_window()
+    let g:markedWinNum = winnr()
+endfunction
+
+function! s:goto_mark()
+    "Mark destination
+    let curNum = winnr()
+    let curBuf = bufnr( "%" )
+    exe g:markedWinNum . "wincmd w"
+    "Switch to source and shuffle dest->source
+    let markedBuf = bufnr( "%" )
+    "Hide and open so that we aren't prompted and keep history
+    exe 'hide buf' curBuf
+    "Switch to dest and shuffle source->dest
+    exe curNum . "wincmd w"
+    "Hide and open so that we aren't prompted and keep history
+    exe 'hide buf' markedBuf
+endfunction
+
 
 colorscheme tokyonight
 
