@@ -31,7 +31,7 @@
               # use home-manager for user environment
               home-manager.nixosModules.home-manager
 
-              hosts.iso.host
+              hosts.nixos.host
 
               {
                 home-manager = {
@@ -39,7 +39,7 @@
                   useGlobalPkgs = true;
                   useUserPackages = true;
                   sharedModules = [ ./modules/user ];
-                  users = hosts.iso.profiles;
+                  users = hosts.nixos.profiles;
                 };
               }
             ];

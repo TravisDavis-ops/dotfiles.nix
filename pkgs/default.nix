@@ -9,6 +9,7 @@ in
   swayhide = callPackage ./swayhide { };
   swaync = callPackage ./swaync { };
   nwg-dock = callPackage ./nwg-dock { };
+
   one-step-from-eden = (import ./one-step-from-eden { inherit lib; }) pkgs;
   cultist-simulator = (import ./cultist-simulator { inherit lib; }) pkgs;
   kentucky-route-zero = (import ./kentucky-route-zero { inherit lib; }) pkgs;
@@ -22,6 +23,10 @@ in
   slay-the-spire = (import ./slay-the-spire { inherit lib; }) pkgs;
   slime-rancher = (import ./slime-rancher { inherit lib; }) pkgs;
   stardew-valley = (import ./stardew-valley { inherit lib; }) pkgs;
-  torchlight = (import ./torchlight { inherit lib; }) pkgs;
+  torchlight-2 = (import ./torchlight-2 { inherit lib; }) pkgs;
+  broken-sword-2 = (import ./broken-sword-2 { inherit lib; }) pkgs;
+  dont-starve = (import ./dont-starve { inherit lib; }) pkgs;
+  sunless-sea =  (import ./sunless-sea { inherit lib; }) pkgs;
+  huniecam-studio = (import ./huniecam-studio { inherit lib; }) pkgs;
 }
 
