@@ -2,14 +2,17 @@
 
   callPackage = inputs.callPackageWith (inputs // {
     inherit (nixpkgs) lib;
-    inherit mkUser mkHostModules;
+    inherit mkUser mkHostModules mkNixGame mkWinGame mkHostSystem ;
   });
 
 
-  mkUser = import ./mkUser.nix;
-  mkGogPackage = import ./mkGogPackage.nix;
+  mkUser = ./mkUser.nix;
 
-  mkProfile = callPackage ./mkProfile.nix {};
+  mkNixGame = callPackage ./mkNixGame.nix {};
+  mkWinGame = callPackage ./mkWinGame.nix {};
+
+  # mkProfile = callPackage ./mkProfile.nix {};
+
   mkHostModules = callPackage ./mkHostModules.nix {};
   mkHostSystem = callPackage ./mkHostSystem.nix { };
 

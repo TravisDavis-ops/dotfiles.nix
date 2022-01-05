@@ -1,3 +1,4 @@
+{...}:
 { binName, installerName, pname, version, sha256, fixup ? "", meta ? { }, }:
 { stdenv, requireFile, zip, unzip, makeWrapper, steam-run, curl, ... }:
 let
@@ -28,6 +29,11 @@ in stdenv.mkDerivation {
   installPhase = ''
     makeWrapper ${steam-run}/bin/steam-run $out/bin/${binName} --add-flags $out/share/$name/data/noarch/start.sh
   '';
-  fixupPhase = fixup;
+  fixupPhase = ''
+    # stop touching you self gog
+    substitute $out/share/$name/data/noarch/start.sh  \
+               $out/share/$name/data/noarch/start.sh  \
+               --replace chmod "#chmod"
+  '' + fixup;
   meta = meta;
 }
