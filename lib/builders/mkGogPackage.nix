@@ -1,6 +1,9 @@
 { binName, installerName, pname, version, sha256, fixup ? "", meta ? { }, }:
-{ stdenv, requireFile, zip, unzip, makeWrapper, steam-run, ... }:
-stdenv.mkDerivation {
+{ stdenv, requireFile, zip, unzip, makeWrapper, steam-run, curl, ... }:
+let
+  #TODO( expose buildInputs )
+  curlWithGnuTls = curl.override { gnutlsSupport = true; opensslSupport = false; }; # dont starve needed this
+in stdenv.mkDerivation {
   name = "${pname}-${version}";
   src = requireFile {
     inherit sha256;
@@ -12,7 +15,7 @@ stdenv.mkDerivation {
     '';
   };
   nativeBuildInputs = [ zip unzip makeWrapper ];
-  buildInputs = [ steam-run ];
+  buildInputs = [ steam-run curlWithGnuTls ];
   unpackPhase = ''
     zip -F $src --out fixed.zip
     unzip -d source fixed.zip
