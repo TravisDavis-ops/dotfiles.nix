@@ -76,7 +76,7 @@ in with pkgs; {
       enableRedistributableFirmware = true;
     };
 
-    users.groups = { input = { }; };
+    users.groups = { input = { }; uinput = {}; };
 
     fileSystems = boot // noCheck extra;
 
