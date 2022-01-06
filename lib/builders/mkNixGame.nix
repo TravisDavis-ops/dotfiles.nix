@@ -1,13 +1,14 @@
-{...}:
+{ ... }:
 { pname # package name
 , iname ? pname # installer name
 , bname ? pname # bin name
 , version # version string
 , sha256 # for the installer
 , fixup ? "" # package speciic fixup
-, inputs ? [] # build Inputs
+, inputs ? [ ] # build Inputs
 , meta ? { }
-, ... }@args:
+, ...
+}@args:
 { stdenvNoCC, requireFile, zip, unzip, makeWrapper, steam-run, ... }@pkgs:
 stdenvNoCC.mkDerivation {
   name = "${pname}-${version}";

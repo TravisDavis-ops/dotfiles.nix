@@ -1,8 +1,9 @@
-{ system, home-manager, nur, lib, mkHostModules,... }:
+{ system, home-manager, nur, lib, mkHostModules, ... }:
 hostConfig:
 let
   module = mkHostModules hostConfig;
-in lib.nixosSystem {
+in
+lib.nixosSystem {
   inherit system;
   modules = [
     module.host

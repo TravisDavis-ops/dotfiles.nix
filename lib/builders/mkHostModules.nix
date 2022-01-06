@@ -10,15 +10,15 @@
    , bootloader ? { }
    , hardware ? { }
    , kernel ? { }
-   , drives ? { boot={}; extra={}; swap = {}; }
+   , drives ? { boot = { }; extra = { }; swap = { }; }
    , network ? { }
    , wifi ? { }
    , modules ? { }
    , services ? { }
    , cores ? 1
    , ...
- }: with builtins;
- let
+   }: with builtins;
+let
   inherit (drives) boot extra swap;
 
   noCheck = set: mapAttrs (k: v: v // { noCheck = true; }) set;
@@ -26,7 +26,8 @@
   userAccounts = map (u: mkUser u) users;
   profiles = reduceToAttr (map (u: callProfile hostName u.name) users);
   pkgs = nixpkgs.legacyPackages.${system};
-in with pkgs; {
+in
+with pkgs; {
   host = {
     imports = [ ../../modules/system ] ++ userAccounts;
 
@@ -77,11 +78,11 @@ in with pkgs; {
       enableRedistributableFirmware = true;
     };
 
-    users.groups = { input = { }; uinput = {}; };
+    users.groups = { input = { }; uinput = { }; };
 
     fileSystems = boot // noCheck extra;
 
-    swapDevices = lib.mkIf ( hasAttr "swap"  drives ) {} // drives.swap;
+    swapDevices = lib.mkIf (hasAttr "swap" drives) { } // drives.swap;
 
     networking = {
       inherit hostName;

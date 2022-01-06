@@ -1,6 +1,6 @@
 { system, nixpkgs, home-manager, nur, ... }@inputs: rec {
 
-  callPackageWith = set: p: overrides: import p (set // overrides);
+  callPackageWith = set: path: overrides: (import path) (set // overrides);
   /* Return a Package called with arguments
 
     Example:
@@ -12,8 +12,10 @@
     callPackageWith set p overrides;
     => 3
   */
+  #TODO(remove)
   callProfileWith = set: host: name: overrides: ({ ${name} = import ../hosts/${host}/profiles/${name}.nix set // overrides; });
 
+  #TODO(remove)
   callProfile = host: name: ({ ${name} = import ../hosts/${host}/profiles/${name}.nix; });
   /* Return an AttrSet of Profiles
 

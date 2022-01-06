@@ -26,7 +26,7 @@ in
       };
       Install = { WantedBy = [ "basic.target" ]; };
       Service = {
-        TimeoutStartSec=120;
+        TimeoutStartSec = 120;
         ExecStart = "${waybar-server}/bin/waybar-server";
         ExecReload = "kill -SIGUSR2 $MAINPID";
         Restart = "on-failure";

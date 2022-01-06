@@ -30,7 +30,7 @@
     };
     neovim = {
       enable = true;
-      enableQol= true;
+      enableQol = true;
       enableRust = true;
       enablePython = true;
       enableNix = true;

@@ -124,7 +124,6 @@ with builtins;  {
         Install = { WantedBy = [ "basic.target" ]; };
         Service = {
           ExecStart = "${neovide-server}/bin/neovide-server";
-
           Restart = "always";
           KillMode = "control-group";
         };
