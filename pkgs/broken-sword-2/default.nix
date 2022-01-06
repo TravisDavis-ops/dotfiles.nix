@@ -1,8 +1,8 @@
-{ lib, ... }:
-lib.builders.mkGogPackage {
+{ builders, ... }@inputs: let b =
+builders.mkNixGame {
   pname = "broken-sword-2-remastered";
+  iname = "gog_broken_sword_2_remastered";
+  bname = "broken-sword-2";
   version = "2.0.0.3";
-  installerName = "gog_broken_sword_2_remastered";
   sha256 = "";
-  binName = "broken-sword-2";
-}
+}; in b (inputs)

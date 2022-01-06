@@ -1,8 +1,9 @@
 { pkgs, lib, system, ... }@inputs:
-let callPackage = lib.callPackageWith pkgs;
+let callPackage = lib.callPackageWith (pkgs // { inherit (lib) builders; });
+
 in
 {
-  nhentai = callPackage ./nhentai { pythonPackages = pkgs.python3Packages; };
+  nhentai = callPackage ./nhentai { pythonPackages = pkgs.python39Packages; };
   mangodl = callPackage ./mangodl { };
   xxh = callPackage ./xxh { pythonPackages = pkgs.python39Packages; };
   cocogitto = callPackage ./cocogitto { };
@@ -10,23 +11,23 @@ in
   swaync = callPackage ./swaync { };
   nwg-dock = callPackage ./nwg-dock { };
 
-  one-step-from-eden = (import ./one-step-from-eden { inherit lib; }) pkgs;
-  cultist-simulator = (import ./cultist-simulator { inherit lib; }) pkgs;
-  kentucky-route-zero = (import ./kentucky-route-zero { inherit lib; }) pkgs;
-  legend-of-grimrock = (import ./legend-of-grimrock { inherit lib; }) pkgs;
-  megaquarium = (import ./megaquarium { inherit lib; }) pkgs;
-  moonlighter = (import ./moonlighter { inherit lib; }) pkgs;
-  orwell = (import ./orwell { inherit lib; }) pkgs;
-  orwell-iis = (import ./orwell-iis { inherit lib; }) pkgs;
-  outlast = (import ./outlast { inherit lib; }) pkgs;
-  shenzhen-io = (import ./shenzhen-io { inherit lib; }) pkgs;
-  slay-the-spire = (import ./slay-the-spire { inherit lib; }) pkgs;
-  slime-rancher = (import ./slime-rancher { inherit lib; }) pkgs;
-  stardew-valley = (import ./stardew-valley { inherit lib; }) pkgs;
-  torchlight-2 = (import ./torchlight-2 { inherit lib; }) pkgs;
-  broken-sword-2 = (import ./broken-sword-2 { inherit lib; }) pkgs;
-  dont-starve = (import ./dont-starve { inherit lib; }) pkgs;
-  sunless-sea =  (import ./sunless-sea { inherit lib; }) pkgs;
-  huniecam-studio = (import ./huniecam-studio { inherit lib; }) pkgs;
+  one-step-from-eden = callPackage ./one-step-from-eden {};
+  cultist-simulator = callPackage ./cultist-simulator {};
+  kentucky-route-zero = callPackage ./kentucky-route-zero {};
+  legend-of-grimrock = callPackage ./legend-of-grimrock {} ;
+  megaquarium = callPackage ./megaquarium { };
+  moonlighter = callPackage ./moonlighter { };
+  orwell = callPackage ./orwell { };
+  orwell-iis = callPackage ./orwell-iis { };
+  outlast = callPackage ./outlast { };
+  shenzhen-io = callPackage ./shenzhen-io { };
+  slay-the-spire = callPackage ./slay-the-spire { };
+  slime-rancher = callPackage ./slime-rancher { };
+  stardew-valley = callPackage ./stardew-valley { };
+  torchlight-2 = callPackage ./torchlight-2 { };
+  broken-sword-2 = callPackage ./broken-sword-2 { };
+  dont-starve = callPackage ./dont-starve { };
+  sunless-sea =  callPackage ./sunless-sea { };
+  huniecam-studio = callPackage ./huniecam-studio { };
 }
 

@@ -1,4 +1,3 @@
-{ ...}:
 { binName, installerName, tname, pname, version, sha256, fixup ? "", meta ? { }, }:
 { stdenv, requireFile, zip, unzip, makeWrapper, wine, innoextract, ... }:
 stdenv.mkDerivation {
