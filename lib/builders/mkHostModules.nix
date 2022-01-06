@@ -6,11 +6,11 @@
 , callProfile
 , ...
 }: { hostName
+   , users
    , bootloader ? { }
    , hardware ? { }
    , kernel ? { }
-   , drives ? { }
-   , users
+   , drives ? { boot={}; extra={}; swap = {}; }
    , network ? { }
    , wifi ? { }
    , modules ? { }
@@ -20,6 +20,7 @@
  }: with builtins;
  let
   inherit (drives) boot extra swap;
+
   noCheck = set: mapAttrs (k: v: v // { noCheck = true; }) set;
 
   userAccounts = map (u: mkUser u) users;
@@ -80,7 +81,7 @@ in with pkgs; {
 
     fileSystems = boot // noCheck extra;
 
-    swapDevices = swap;
+    swapDevices = lib.mkIf ( hasAttr "swap"  drives ) {} // drives.swap;
 
     networking = {
       inherit hostName;

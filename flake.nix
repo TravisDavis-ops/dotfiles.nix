@@ -48,9 +48,9 @@
         };
       in
       {
-        nixosConfigurations = removeAttrs hosts [ "iso" ];
+        nixosConfigurations = removeAttrs hosts [ "nixos" ];
         nixosModules = {
-          anime-hub = import ./modules/nixos/anime-hub;
+          anime-hub = import ./modules/system/anime-hub;
         };
         templates = import ./templates;
         inherit lib;
