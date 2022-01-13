@@ -8,7 +8,7 @@
 , fixup ? ""
 , inputs ? [ ]
 , meta ? { }, }:
-{ stdenv, requireFile, zip, unzip, makeWrapper, wine, innoextract, ... }:
+{ stdenv, requireFile, zip, unzip, makeWrapper, wine64, innoextract, ... }:
 stdenv.mkDerivation {
   name = "${pname}-${version}";
   src = requireFile {
@@ -22,7 +22,7 @@ stdenv.mkDerivation {
     '';
   };
   nativeBuildInputs = [ ];
-  buildInputs = [ wine innoextract  makeWrapper ];
+  buildInputs = [ wine64 innoextract  makeWrapper ];
 
   unpackPhase = ''
     pwd
@@ -36,7 +36,7 @@ stdenv.mkDerivation {
   '';
 
   installPhase = ''
-    makeWrapper ${wine}/bin/wine $out/bin/${bname} --add-flags $out/share/${pname}/${ename}.exe
+    makeWrapper ${wine64}/bin/wine64 $out/bin/${bname} --add-flags $out/share/${pname}/${ename}.exe
   '';
 
   fixupPhase = fixup;

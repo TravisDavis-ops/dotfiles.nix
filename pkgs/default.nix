@@ -1,6 +1,5 @@
 { pkgs, lib, system, ... }@inputs:
 let callPackage = lib.callPackageWith (pkgs // { inherit (lib) builders; });
-
 in
 {
   nhentai = callPackage ./nhentai { pythonPackages = pkgs.python39Packages; };
@@ -29,5 +28,6 @@ in
   dont-starve = callPackage ./dont-starve { };
   sunless-sea = callPackage ./sunless-sea { };
   huniecam-studio = callPackage ./huniecam-studio { };
+  dodgeball-academia = callPackage ./dodgeball-academia { };
 }
 
