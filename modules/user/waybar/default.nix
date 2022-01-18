@@ -17,7 +17,7 @@ in
       enable = true;
       style = ./style.css;
     };
-    xdg.configFile."waybar/config".source = ./config;
+    xdg.configFile."waybar/config".source = ./config.json;
 
     systemd.user.services.waybar = {
       Unit = {

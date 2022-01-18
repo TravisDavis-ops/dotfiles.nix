@@ -1,10 +1,7 @@
 { pkgs, nur, builders, common, ... }:
-let
+builders.mkHostSystem rec {
   hostName = "ruby";
   drives = import ./drives;
-in
-builders.mkHostSystem rec {
-  inherit hostName drives;
 
   bootloader = {
     efi.canTouchEfiVariables = true;
@@ -16,7 +13,14 @@ builders.mkHostSystem rec {
       enable = true;
       extraConfig = "load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1";
     };
-    opengl.driSupport32Bit = true;
+    opengl.extraPackages = with pkgs; [
+      amdvlk
+    ];
+    # For 32 bit applications
+    # Only available on unstable
+    opengl.extraPackages32 = with pkgs; [
+      driversi686Linux.amdvlk
+    ];
     bluetooth = {
       enable = true;
       powerOnBoot = true;

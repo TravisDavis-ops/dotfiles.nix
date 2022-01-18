@@ -10,7 +10,7 @@
    , bootloader ? { }
    , hardware ? { }
    , kernel ? { }
-   , drives ? { boot = { }; extra = { }; swap = { }; }
+   , drives ? { boot = { }; extra = { }; swap = [ ]; }
    , network ? { }
    , wifi ? { }
    , modules ? { }
@@ -82,7 +82,7 @@ with pkgs; {
 
     fileSystems = boot // noCheck extra;
 
-    swapDevices = lib.mkIf (hasAttr "swap" drives) { } // drives.swap;
+    swapDevices = lib.mkIf (hasAttr "swap" drives) ([ ] ++ drives.swap);
 
     networking = {
       inherit hostName;

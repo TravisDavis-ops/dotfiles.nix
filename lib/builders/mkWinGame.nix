@@ -7,7 +7,9 @@
 , sha256
 , fixup ? ""
 , inputs ? [ ]
-, meta ? { }, }:
+, meta ? { }
+,
+}:
 { stdenv, requireFile, zip, unzip, makeWrapper, wine, innoextract, ... }:
 stdenv.mkDerivation {
   name = "${pname}-${version}";
@@ -22,7 +24,7 @@ stdenv.mkDerivation {
     '';
   };
   nativeBuildInputs = [ ];
-  buildInputs = [ wine innoextract  makeWrapper ];
+  buildInputs = [ wine innoextract makeWrapper ];
 
   unpackPhase = ''
     pwd

@@ -24,7 +24,7 @@ in
   slime-rancher = callPackage ./slime-rancher { };
   stardew-valley = callPackage ./stardew-valley { };
   torchlight-2 = callPackage ./torchlight-2 { };
-  broken-sword-2 = callPackage ./broken-sword-2 { };
+  #broken-sword-2 = callPackage ./broken-sword-2 { };
   dont-starve = callPackage ./dont-starve { };
   sunless-sea = callPackage ./sunless-sea { };
   huniecam-studio = callPackage ./huniecam-studio { };
