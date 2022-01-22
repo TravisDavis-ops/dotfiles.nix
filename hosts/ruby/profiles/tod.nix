@@ -18,6 +18,7 @@
       qbittorrent
       exa
       nerdfonts
+      tiled
     ]);
     sessionVariables = {
       CLUTTER_BACKEND = "wayland";
