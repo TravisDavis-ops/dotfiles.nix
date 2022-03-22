@@ -21,7 +21,7 @@ let
   nixDeps = with pkgs; [ rnix-lsp ];
 
   rustPlugins = with pkgs.vimPlugins; [ coc-rust-analyzer vim-toml ];
-  rustDeps = with pkgs; [ rust-analyzer rustc cargo ];
+  rustDeps = with pkgs; [ ];
 
   pythonPlugins = with pkgs.vimPlugins; [ coc-pyright ];
   pythonDeps = with pkgs; [ python310 ];

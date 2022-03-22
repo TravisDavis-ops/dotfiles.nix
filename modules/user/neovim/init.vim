@@ -66,9 +66,6 @@ augroup CursorLine
     au WinLeave * setlocal nocursorline
 augroup END
 
-nmap <silent> <leader>mw :call ()<CR>
-nmap <silent> <leader>pw :call DoWindowSwap()<CR>
-
 command! -nargs=0 MarkWindow :call s:mark_window()
 command! -nargs=0 GotoWindow :call s:goto_mark()
 command! -nargs=0 ShowDocs :call s:show_documentation()
@@ -92,8 +89,8 @@ tnoremap <Esc> <C-\><C-n>
 nnoremap o o<Esc>
 nnoremap O O<Esc>
 
-nnoremap <C-m> :MarkWindow
-nnoremap <C-'> :GotoWindow
+nnoremap <C-m> :MarkWindow<CR>
+nnoremap <C-'> :GotoWindow<CR>
 
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
@@ -174,7 +171,7 @@ endfunction
 colorscheme tokyonight
 
 function! ConnectedTo() abort
-    if v:severname = "localhost:9000";
+    if v:severname;
         return "🔌:".v:servername
     else
         return "Disconnected"
