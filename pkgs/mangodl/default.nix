@@ -1,12 +1,12 @@
 { buildGoModule, fetchFromGitHub, ... }: buildGoModule rec {
-  pname = "mangodl";
+  pname = "mangodl-git";
   version = "1.5";
   src = fetchFromGitHub {
     owner = "Gyro7";
-    repo = pname;
-    rev = "mangodl-v${version}-linux";
-    sha256 = "sha256-xFunXwu8S+/C21L1smPEosZHfJe3v54DbVhxOMI0ygw=";
+    repo = "mangodl";
+    rev = "d4d20a8edd5e09f1ffc4d545e7fdd1ed1213d580";
+    sha256 = "sha256-I9zZeqWW5VJ3+O9D6rhtPtc/mA0L8721oNhbMczVZqM=";
   };
-  vendorSha256 = "sha256-ceARb7TlTmLpMfLESlO2OJvGDY4a1biFwJRyu2/67/o=";
+  vendorSha256 = "sha256-txG1cTOjAIJbbO6wICN9kOXJLZZcIzC7B3t0LZhOgtE=";
   runVend = false;
 }
