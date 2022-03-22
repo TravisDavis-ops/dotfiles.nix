@@ -30,9 +30,9 @@ builders.mkHostSystem rec {
   };
 
   kernel = {
-    package = pkgs.linuxPackages;
+    package = pkgs.linuxKernel.packages.linux_zen;
     earlyModules = [ "xhci_pci" "ahci" "nvme" "uas" "usbhid" "sd_mod" ];
-    lateModules = [ "kvm-amd" "amdgpu" "radeon" ];
+    lateModules = [ "kvm-amd" "amdgpu" ];
     params = [ ];
   };
 

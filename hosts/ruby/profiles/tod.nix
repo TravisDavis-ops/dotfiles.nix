@@ -5,11 +5,11 @@
   home = {
     packages = (with nur; [
       swayhide
-      one-step-from-eden
-      slime-rancher
-      stardew-valley
-      moonlighter
-      dont-starve
+      #      one-step-from-eden
+      #      slime-rancher
+      #      stardew-valley
+      #      moonlighter
+      #      dont-starve
       nhentai
     ]) ++ (with pkgs; [
       bpytop

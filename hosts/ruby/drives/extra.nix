@@ -1,12 +1,22 @@
 {
+  #"/mnt/windows"={
+  #  label = "WINDOWS";
+  #  noCheck = true;
+  #  fsType = "ntfs";
+  #};
   "/mnt/media" = {
-    label = "Share1";
+    label = "MEDIA";
     noCheck = true;
     fsType = "ntfs";
   };
-  "/mnt/HotStorage" = {
-    label = "HotStorage";
+  "/mnt/game.d0" = {
+    label = "GAME-D0";
     noCheck = true;
-    fsType = "ext4";
+    fsType = "ntfs";
+  };
+  "/mnt/game.d1" = {
+    label = "GAME-D1";
+    noCheck = true;
+    fsType = "ntfs";
   };
 }

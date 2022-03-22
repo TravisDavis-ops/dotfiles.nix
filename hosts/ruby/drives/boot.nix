@@ -1,14 +1,14 @@
 {
   "/" = {
-    label = "nixos";
+    label = "ROOT";
     fsType = "ext4";
   };
   "/boot" = {
-    label = "boot";
+    label = "BOOT";
     fsType = "vfat";
   };
   "/home" = {
-    label = "storage";
+    label = "HOME";
     fsType = "ext4";
   };
 }
