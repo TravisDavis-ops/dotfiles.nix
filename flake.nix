@@ -4,7 +4,7 @@
   '';
 
   inputs = {
-    nixpkgs.url = "github:NixOs/nixpkgs/master";
+    nixpkgs.url = "github:NixOs/nixpkgs/nixos-21.11";
     home-manager.url = "github:nix-community/home-manager/master";
     nixos-gen.url = "github:nix-community/nixos-generators";
     flake-utils.url = "github:gytis-ivaskevicius/flake-utils-plus";
