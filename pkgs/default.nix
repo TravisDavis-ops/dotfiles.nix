@@ -6,6 +6,7 @@ in
   mangodl = callPackage ./mangodl { };
   xxh = callPackage ./xxh { pythonPackages = pkgs.python39Packages; };
   cocogitto = callPackage ./cocogitto { };
+  custom-module = callPackage ./custom-module { };
   swayhide = callPackage ./swayhide { };
   swaync = callPackage ./swaync { };
   nwg-dock = callPackage ./nwg-dock { };
